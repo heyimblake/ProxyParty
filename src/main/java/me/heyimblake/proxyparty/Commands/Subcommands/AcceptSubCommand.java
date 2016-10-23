@@ -19,10 +19,11 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  *         All rights reserved.
  */
 @PartySubCommandExecutor(subCommand = "accept",
-syntax = "/party accept <Player>",
-description = "Accepts a party invitation from a player.",
-requiresArgumentCompletion = true,
-leaderExclusive = false)
+        syntax = "/party accept <Player>",
+        description = "Accepts a party invitation from a player.",
+        requiresArgumentCompletion = true,
+        leaderExclusive = false,
+        mustBeInParty = false)
 public class AcceptSubCommand extends AnnotatedPartySubCommand {
 
     public AcceptSubCommand(PartySubCommandHandler handler) {
@@ -52,7 +53,7 @@ public class AcceptSubCommand extends AnnotatedPartySubCommand {
             return;
         }
         if (PartyManager.getInstance().getPartyOf(target).getParticipants().contains(player)) {
-            TextComponent msg = new TextComponent("You've joined " + target.getName() +"'s Party!");
+            TextComponent msg = new TextComponent("You've joined " + target.getName() + "'s Party!");
             msg.setColor(ChatColor.AQUA);
             Party party = PartyManager.getInstance().getPartyOf(target);
             party.addParticipant(player);

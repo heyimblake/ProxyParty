@@ -23,7 +23,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
         syntax = "/party invite <Player>",
         description = "Invites a player (and creates a party if not in one).",
         requiresArgumentCompletion = true,
-        leaderExclusive = true)
+        leaderExclusive = true,
+        mustBeInParty = false)
 public class InviteSubCommand extends AnnotatedPartySubCommand {
 
     public InviteSubCommand(PartySubCommandHandler handler) {

@@ -21,7 +21,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
         syntax = "/party list",
         description = "Shows a list of current party members.",
         requiresArgumentCompletion = false,
-        leaderExclusive = false)
+        leaderExclusive = false,
+        mustBeInParty = true)
 public class ListSubCommand extends AnnotatedPartySubCommand {
 
     public ListSubCommand(PartySubCommandHandler handler) {
@@ -32,12 +33,6 @@ public class ListSubCommand extends AnnotatedPartySubCommand {
     public void runProxiedPlayer() {
         ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
         Party party = PartyManager.getInstance().getPartyOf(player);
-        if (party == null) {
-            TextComponent msg = new TextComponent("You are not in a party.");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
-            return;
-        }
         TextComponent line1 = new TextComponent("Party Leader: ");
         line1.setColor(ChatColor.YELLOW);
         line1.addExtra(new TextComponent(party.getLeader().getName()));

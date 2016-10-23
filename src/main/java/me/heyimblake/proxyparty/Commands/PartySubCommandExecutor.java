@@ -47,4 +47,11 @@ public @interface PartySubCommandExecutor {
      * @return true if command sender must be the party leader
      */
     boolean leaderExclusive() default false;
+
+    /**
+     * Does the subcommand require the command sender to be in a party
+     *
+     * @return true if sender must be in a party, false otherwise
+     */
+    boolean mustBeInParty() default true;
 }

@@ -1,6 +1,7 @@
 package me.heyimblake.proxyparty.Commands;
 
 import me.heyimblake.proxyparty.Commands.Subcommands.*;
+import me.heyimblake.proxyparty.PartyUtils.PartyManager;
 import me.heyimblake.proxyparty.PartyUtils.PartyRole;
 import me.heyimblake.proxyparty.Utils.Constants;
 import net.md_5.bungee.api.ChatColor;
@@ -56,6 +57,12 @@ public class PartyCommand extends Command {
                         TextComponent usage = new TextComponent(getSubCommandClassAnnotation(clazz).syntax());
                         usage.setColor(ChatColor.AQUA);
                         sender.sendMessage(Constants.TAG, new TextComponent("Usage: "), usage);
+                        return;
+                    }
+                    if (sender instanceof ProxiedPlayer && PartyManager.getInstance().getPartyOf(((ProxiedPlayer) sender)) == null && getSubCommandClassAnnotation(clazz).mustBeInParty()) {
+                        TextComponent errmsg = new TextComponent("You must be a party in order to do this!");
+                        errmsg.setColor(ChatColor.RED);
+                        sender.sendMessage(Constants.TAG, errmsg);
                         return;
                     }
                     performSubCommand(clazz, handler);

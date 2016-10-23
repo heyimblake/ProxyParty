@@ -18,10 +18,11 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  *         All rights reserved.
  */
 @PartySubCommandExecutor(subCommand = "disband",
-syntax = "/party disband",
-description = "Disbands your party.",
-requiresArgumentCompletion = false,
-leaderExclusive = true)
+        syntax = "/party disband",
+        description = "Disbands your party.",
+        requiresArgumentCompletion = false,
+        leaderExclusive = true,
+        mustBeInParty = true)
 public class DisbandSubCommand extends AnnotatedPartySubCommand {
 
     public DisbandSubCommand(PartySubCommandHandler handler) {

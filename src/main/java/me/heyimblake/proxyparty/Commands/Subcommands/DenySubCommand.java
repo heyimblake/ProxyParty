@@ -19,10 +19,11 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  *         All rights reserved.
  */
 @PartySubCommandExecutor(subCommand = "deny",
-syntax = "/party deny <Player>",
-description = "Denys a party invitation from a player.",
-requiresArgumentCompletion = true,
-leaderExclusive = false)
+        syntax = "/party deny <Player>",
+        description = "Denys a party invitation from a player.",
+        requiresArgumentCompletion = true,
+        leaderExclusive = false,
+        mustBeInParty = false)
 public class DenySubCommand extends AnnotatedPartySubCommand {
 
     public DenySubCommand(PartySubCommandHandler handler) {
