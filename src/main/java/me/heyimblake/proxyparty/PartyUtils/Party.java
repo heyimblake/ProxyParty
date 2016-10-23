@@ -25,6 +25,7 @@ public class Party {
         this.invited = new HashSet<>();
         PartyRole.setRoleOf(leader, PartyRole.LEADER);
         PartyManager.getInstance().getActiveParties().add(this);
+        PartyManager.getInstance().getPlayerPartyMap().put(this.leader, this);
         ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyCreateEvent(this));
     }
 
@@ -34,6 +35,8 @@ public class Party {
         this.invited = new HashSet<>();
         PartyRole.setRoleOf(leader, PartyRole.LEADER);
         this.participants.forEach(participant -> PartyRole.setRoleOf(participant, PartyRole.PARTICIPANT));
+        this.participants.forEach(participant -> PartyManager.getInstance().getPlayerPartyMap().put(participant, this));
+        PartyManager.getInstance().getPlayerPartyMap().put(this.leader, this);
         PartyManager.getInstance().getActiveParties().add(this);
         ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyCreateEvent(this));
     }
@@ -46,6 +49,8 @@ public class Party {
         ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyPromoteEvent(this, player, this.leader));
         this.leader = player;
         PartyRole.setRoleOf(player, PartyRole.LEADER);
+        PartyManager.getInstance().getPlayerPartyMap().remove(player);
+        PartyManager.getInstance().getPlayerPartyMap().put(player, this);
     }
 
     public Set<ProxiedPlayer> getParticipants() {

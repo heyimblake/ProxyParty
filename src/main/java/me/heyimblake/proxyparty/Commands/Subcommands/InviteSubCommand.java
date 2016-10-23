@@ -35,16 +35,21 @@ public class InviteSubCommand extends AnnotatedPartySubCommand {
         ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
         String targetName = getHandler().getArguments()[0];
         ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(targetName);
-        if (target == null) {
+        if (target == null || (target != null && target.getUniqueId() == player.getUniqueId())) {
             TextComponent msg = new TextComponent("Cannot find or invite that player to your party! :(");
             msg.setColor(ChatColor.RED);
             player.sendMessage(Constants.TAG, msg);
             return;
         }
-
-
+        Party targetParty = PartyManager.getInstance().getPartyOf(target);
+        if (targetParty != null) {
+            TextComponent msg = new TextComponent("This player is already a member of a party. Ask them to leave their party and try this command again.");
+            msg.setColor(ChatColor.RED);
+            player.sendMessage(Constants.TAG, msg);
+            return;
+        }
         Party party = !PartyManager.getInstance().hasParty(player) ? new PartyCreator().setLeader(player).create() : PartyManager.getInstance().getPartyOf(player);
-        if (party.getParticipants().contains(target) || target.getUniqueId() == player.getUniqueId()) {
+        if (party.getParticipants().contains(target)) {
             TextComponent msg = new TextComponent("This player is already invited to your party!");
             msg.setColor(ChatColor.RED);
             player.sendMessage(Constants.TAG, msg);

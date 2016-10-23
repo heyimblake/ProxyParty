@@ -1,5 +1,16 @@
 package me.heyimblake.proxyparty.Commands.Subcommands;
 
+import me.heyimblake.proxyparty.Commands.AnnotatedPartySubCommand;
+import me.heyimblake.proxyparty.Commands.PartySubCommandExecutor;
+import me.heyimblake.proxyparty.Commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.PartyUtils.Party;
+import me.heyimblake.proxyparty.PartyUtils.PartyManager;
+import me.heyimblake.proxyparty.ProxyParty;
+import me.heyimblake.proxyparty.Utils.Constants;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+
 /**
  * Created by heyimblake on 10/23/2016.
  *
@@ -7,5 +18,48 @@ package me.heyimblake.proxyparty.Commands.Subcommands;
  *         Copyright (c) 2016 heyimblake.
  *         All rights reserved.
  */
-public class DenySubCommand {
+@PartySubCommandExecutor(subCommand = "deny",
+syntax = "/party deny <Player>",
+description = "Denys a party invitation from a player.",
+requiresArgumentCompletion = true,
+leaderExclusive = false)
+public class DenySubCommand extends AnnotatedPartySubCommand {
+
+    public DenySubCommand(PartySubCommandHandler handler) {
+        super(handler);
+    }
+
+    @Override
+    public void runProxiedPlayer() {
+        ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
+        ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
+        if (target == null) {
+            TextComponent msg = new TextComponent("The specified player could not be found.");
+            msg.setColor(ChatColor.RED);
+            player.sendMessage(Constants.TAG, msg);
+            return;
+        }
+        if (PartyManager.getInstance().getPartyOf(target) == null || !PartyManager.getInstance().getPartyOf(target).getLeader().getUniqueId().equals(target.getUniqueId())) {
+            TextComponent msg = new TextComponent("The specified player either is not in a party or is not the party leader.");
+            msg.setColor(ChatColor.RED);
+            player.sendMessage(Constants.TAG, msg);
+            return;
+        }
+        Party party = PartyManager.getInstance().getPartyOf(target);
+        if (!party.getInvited().contains(player)) {
+            TextComponent msg = new TextComponent("You are not invited to this party.");
+            msg.setColor(ChatColor.RED);
+            player.sendMessage(Constants.TAG, msg);
+            return;
+        }
+        party.getInvited().remove(player);
+        TextComponent msg = new TextComponent("You declined " + target.getName() + "'s party invitation.");
+        msg.setColor(ChatColor.AQUA);
+        player.sendMessage(Constants.TAG, msg);
+    }
+
+    @Override
+    public void runConsole() {
+
+    }
 }

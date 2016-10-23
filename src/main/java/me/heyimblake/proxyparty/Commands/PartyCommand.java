@@ -1,5 +1,7 @@
 package me.heyimblake.proxyparty.Commands;
 
+import me.heyimblake.proxyparty.Commands.Subcommands.AcceptSubCommand;
+import me.heyimblake.proxyparty.Commands.Subcommands.DenySubCommand;
 import me.heyimblake.proxyparty.Commands.Subcommands.InviteSubCommand;
 import me.heyimblake.proxyparty.Commands.Subcommands.ListSubCommand;
 import me.heyimblake.proxyparty.PartyUtils.PartyRole;
@@ -32,6 +34,8 @@ public class PartyCommand extends Command {
     public PartyCommand() {
         super("party");
         defaultSubCommandClasses.add(InviteSubCommand.class);
+        defaultSubCommandClasses.add(AcceptSubCommand.class);
+        defaultSubCommandClasses.add(DenySubCommand.class);
         defaultSubCommandClasses.add(ListSubCommand.class);
         registerDefaultSubCommands();
     }
