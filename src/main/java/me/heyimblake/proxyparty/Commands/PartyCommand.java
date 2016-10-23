@@ -1,9 +1,6 @@
 package me.heyimblake.proxyparty.Commands;
 
-import me.heyimblake.proxyparty.Commands.Subcommands.AcceptSubCommand;
-import me.heyimblake.proxyparty.Commands.Subcommands.DenySubCommand;
-import me.heyimblake.proxyparty.Commands.Subcommands.InviteSubCommand;
-import me.heyimblake.proxyparty.Commands.Subcommands.ListSubCommand;
+import me.heyimblake.proxyparty.Commands.Subcommands.*;
 import me.heyimblake.proxyparty.PartyUtils.PartyRole;
 import me.heyimblake.proxyparty.Utils.Constants;
 import net.md_5.bungee.api.ChatColor;
@@ -37,6 +34,7 @@ public class PartyCommand extends Command {
         defaultSubCommandClasses.add(AcceptSubCommand.class);
         defaultSubCommandClasses.add(DenySubCommand.class);
         defaultSubCommandClasses.add(ListSubCommand.class);
+        defaultSubCommandClasses.add(DisbandSubCommand.class);
         registerDefaultSubCommands();
     }
 
@@ -49,7 +47,7 @@ public class PartyCommand extends Command {
                 Class<? extends AnnotatedPartySubCommand> clazz = subCommandClasses.get(key);
                 if (key.equalsIgnoreCase(subCMDInput)) {
                     if (sender instanceof ProxiedPlayer && PartyRole.getRoleOf(((ProxiedPlayer) sender)) == PartyRole.PARTICIPANT && getSubCommandClassAnnotation(clazz).leaderExclusive()) {
-                        TextComponent errmsg = new TextComponent("You must be the party leader in order to use this sub command.");
+                        TextComponent errmsg = new TextComponent("You must be the party leader in order to do this.");
                         errmsg.setColor(ChatColor.RED);
                         sender.sendMessage(Constants.TAG, errmsg);
                         return;
