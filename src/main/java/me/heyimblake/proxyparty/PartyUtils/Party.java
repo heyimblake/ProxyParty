@@ -42,6 +42,12 @@ public class Party {
         return this.leader;
     }
 
+    public void setLeader(ProxiedPlayer player) {
+        ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyPromoteEvent(this, player, this.leader));
+        this.leader = player;
+        PartyRole.setRoleOf(player, PartyRole.LEADER);
+    }
+
     public Set<ProxiedPlayer> getParticipants() {
         return this.participants;
     }
@@ -62,12 +68,6 @@ public class Party {
         PartyManager.getInstance().getPlayerPartyMap().put(player, this);
         PartyRole.setRoleOf(player, PartyRole.PARTICIPANT);
         ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyPlayerJoinEvent(this, player));
-    }
-
-    public void setLeader(ProxiedPlayer player) {
-        ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyPromoteEvent(this, player, this.leader));
-        this.leader = player;
-        PartyRole.setRoleOf(player, PartyRole.LEADER);
     }
 
     public void invitePlayer(ProxiedPlayer player) {

@@ -1,6 +1,7 @@
 package me.heyimblake.proxyparty;
 
 import me.heyimblake.proxyparty.Commands.PartyCommand;
+import me.heyimblake.proxyparty.Listeners.PartySendInviteListener;
 import me.heyimblake.proxyparty.Listeners.PlayerChatListener;
 import me.heyimblake.proxyparty.Listeners.PlayerQuitListener;
 import me.heyimblake.proxyparty.Listeners.PlayerServerSwitchListener;
@@ -31,5 +32,6 @@ public final class ProxyParty extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PlayerChatListener());
         getProxy().getPluginManager().registerListener(this, new PlayerQuitListener());
         getProxy().getPluginManager().registerListener(this, new PlayerServerSwitchListener());
+        getProxy().getPluginManager().registerListener(this, new PartySendInviteListener());
     }
 }

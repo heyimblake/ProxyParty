@@ -9,14 +9,15 @@ package me.heyimblake.proxyparty.Commands;
  *         All rights reserved.
  */
 public abstract class AnnotatedPartySubCommand {
-    public abstract void runProxiedPlayer();
-    public abstract void runConsole();
-
     private PartySubCommandHandler handler;
 
     public AnnotatedPartySubCommand(PartySubCommandHandler handler) {
         this.handler = handler;
     }
+
+    public abstract void runProxiedPlayer();
+
+    public abstract void runConsole();
 
     public PartySubCommandHandler getHandler() {
         return this.handler;

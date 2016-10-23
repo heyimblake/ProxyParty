@@ -1,6 +1,8 @@
 package me.heyimblake.proxyparty.Commands;
 
+import me.heyimblake.proxyparty.Commands.Subcommands.InviteSubCommand;
 import me.heyimblake.proxyparty.Commands.Subcommands.ListSubCommand;
+import me.heyimblake.proxyparty.PartyUtils.PartyRole;
 import me.heyimblake.proxyparty.Utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -8,9 +10,9 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -29,6 +31,7 @@ public class PartyCommand extends Command {
 
     public PartyCommand() {
         super("party");
+        defaultSubCommandClasses.add(InviteSubCommand.class);
         defaultSubCommandClasses.add(ListSubCommand.class);
         registerDefaultSubCommands();
     }
@@ -39,8 +42,21 @@ public class PartyCommand extends Command {
             PartySubCommandHandler handler = new PartySubCommandHandler(sender, Arrays.copyOfRange(args, 1, args.length));
             String subCMDInput = args[0];
             for (String key : subCommandClasses.keySet()) {
+                Class<? extends AnnotatedPartySubCommand> clazz = subCommandClasses.get(key);
                 if (key.equalsIgnoreCase(subCMDInput)) {
-                    performSubCommand(subCommandClasses.get(key), handler);
+                    if (sender instanceof ProxiedPlayer && PartyRole.getRoleOf(((ProxiedPlayer) sender)) == PartyRole.PARTICIPANT && getSubCommandClassAnnotation(clazz).leaderExclusive()) {
+                        TextComponent errmsg = new TextComponent("You must be the party leader in order to use this sub command.");
+                        errmsg.setColor(ChatColor.RED);
+                        sender.sendMessage(Constants.TAG, errmsg);
+                        return;
+                    }
+                    if (handler.getArguments().length == 0 && getSubCommandClassAnnotation(clazz).requiresArgumentCompletion()) {
+                        TextComponent usage = new TextComponent(getSubCommandClassAnnotation(clazz).syntax());
+                        usage.setColor(ChatColor.AQUA);
+                        sender.sendMessage(Constants.TAG, new TextComponent("Usage: "), usage);
+                        return;
+                    }
+                    performSubCommand(clazz, handler);
                     return;
                 }
             }
@@ -78,7 +94,7 @@ public class PartyCommand extends Command {
             pt1.setColor(ChatColor.DARK_AQUA);
             TextComponent pt2 = new TextComponent(getSubCommandClassAnnotation(clazz).syntax());
             pt2.setColor(ChatColor.AQUA);
-            pt2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,  new BaseComponent[]{prepareMSG}));
+            pt2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{prepareMSG}));
             pt2.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/party " + getSubCommandClassAnnotation(clazz).subCommand() + " "));
             TextComponent pt3 = new TextComponent(" - ");
             pt3.setColor(ChatColor.DARK_GRAY);

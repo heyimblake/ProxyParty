@@ -12,5 +12,5 @@ import net.md_5.bungee.api.chat.TextComponent;
  *         All rights reserved.
  */
 public class Constants {
-    public static final BaseComponent TAG = new TextComponent(ChatColor.DARK_GRAY + "" + '\u2502' + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + " Party" + ChatColor.DARK_GRAY + '\u2502' + ChatColor.RESET + " ");
+    public static final BaseComponent TAG = new TextComponent(ChatColor.DARK_GRAY + "" + '\u2502' + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + " Party" + ChatColor.DARK_GRAY + '\u2502' + ChatColor.GRAY + " ");
 }
