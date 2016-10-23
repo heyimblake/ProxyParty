@@ -29,9 +29,12 @@ public class PlayerServerSwitchListener implements Listener {
         Party party = PartyManager.getInstance().getPartyOf(player);
         if (PartyRole.getRoleOf(player) == PartyRole.LEADER) {
             TextComponent msg = new TextComponent("Sending you to your party leader's server!");
-            msg.setColor(ChatColor.YELLOW);
+            msg.setColor(ChatColor.AQUA);
             party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, msg));
             party.warpParticipants(player.getServer().getInfo());
+            TextComponent msg1 = new TextComponent("Attempting to send all party members to your server.");
+            msg1.setColor(ChatColor.DARK_AQUA);
+            party.getLeader().sendMessage(Constants.TAG, msg1);
             return;
         }
 
@@ -40,6 +43,7 @@ public class PlayerServerSwitchListener implements Listener {
 
         TextComponent msg = new TextComponent("Only party leaders can join servers whilst in a party!");
         msg.setColor(ChatColor.RED);
+        msg.setBold(true);
 
         player.sendMessage(Constants.TAG, msg);
     }
