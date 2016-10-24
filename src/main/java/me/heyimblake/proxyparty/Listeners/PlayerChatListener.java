@@ -17,7 +17,7 @@ import net.md_5.bungee.event.EventPriority;
  *         All rights reserved.
  */
 public class PlayerChatListener implements Listener {
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(ChatEvent event) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
         Party party = PartyManager.getInstance().getPartyOf(player);
@@ -27,7 +27,7 @@ public class PlayerChatListener implements Listener {
         if (!PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player)) {
             return;
         }
-        if (event.getMessage().substring(0,1).equalsIgnoreCase("/"))
+        if (event.getMessage().substring(0, 1).equalsIgnoreCase("/"))
             return;
         event.setCancelled(true);
         party.sendMessage(player, event.getMessage());
