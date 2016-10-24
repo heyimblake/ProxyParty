@@ -57,7 +57,7 @@ public class PartyCommand extends Command {
                     if (handler.getArguments().length == 0 && getSubCommandClassAnnotation(clazz).requiresArgumentCompletion()) {
                         TextComponent usage = new TextComponent(getSubCommandClassAnnotation(clazz).syntax());
                         usage.setColor(ChatColor.AQUA);
-                        usage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, getSubCommandClassAnnotation(clazz).subCommand() + " "));
+                        usage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/party " + getSubCommandClassAnnotation(clazz).subCommand() + " "));
                         usage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(ChatColor.YELLOW + "Click to prepare command.")}));
                         sender.sendMessage(Constants.TAG, new TextComponent("Usage: "), usage);
                         return;
