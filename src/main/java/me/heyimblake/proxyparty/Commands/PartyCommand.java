@@ -61,7 +61,7 @@ public class PartyCommand extends Command {
                         return;
                     }
                     if (sender instanceof ProxiedPlayer && PartyManager.getInstance().getPartyOf(((ProxiedPlayer) sender)) == null && getSubCommandClassAnnotation(clazz).mustBeInParty()) {
-                        TextComponent errmsg = new TextComponent("You must be a party in order to do this!");
+                        TextComponent errmsg = new TextComponent("You must be in a party in order to do this!");
                         errmsg.setColor(ChatColor.RED);
                         sender.sendMessage(Constants.TAG, errmsg);
                         return;
