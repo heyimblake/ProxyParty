@@ -21,9 +21,9 @@ public class PartyPlayerQuitListener implements Listener {
     public void onPartyPlayerQuit(PartyPlayerQuitEvent event) {
         Party party = event.getParty();
         ProxiedPlayer quitter = event.getWhoQuit();
-        TextComponent plus = new TextComponent("" + '\u2716' + " ");
-        plus.setColor(ChatColor.RED);
-        party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, plus, new TextComponent(quitter.getName())));
-        party.getLeader().sendMessage(Constants.TAG, plus, new TextComponent(quitter.getName()));
+        TextComponent ex = new TextComponent("" + '\u2716' + " ");
+        ex.setColor(ChatColor.RED);
+        party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, ex, new TextComponent(quitter.getName())));
+        party.getLeader().sendMessage(Constants.TAG, ex, new TextComponent(quitter.getName()));
     }
 }
