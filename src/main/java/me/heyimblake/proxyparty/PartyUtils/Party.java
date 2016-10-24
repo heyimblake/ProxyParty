@@ -19,7 +19,7 @@ import java.util.Set;
  *         All rights reserved.
  */
 public class Party {
-    private ProxiedPlayer leader;
+    private ProxiedPlayer leader = null;
     private Set<ProxiedPlayer> participants, invited;
 
     protected Party(ProxiedPlayer leader) {
@@ -50,8 +50,14 @@ public class Party {
 
     public void setLeader(ProxiedPlayer player) {
         ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyPromoteEvent(this, player, this.leader));
+        if (this.leader != null) {
+            PartyRole.setRoleOf(this.leader, PartyRole.PARTICIPANT);
+            this.participants.add(this.leader);
+        }
         this.leader = player;
         PartyRole.setRoleOf(player, PartyRole.LEADER);
+        if (this.participants.contains(player))
+            this.participants.remove(player);
         PartyManager.getInstance().getPlayerPartyMap().remove(player);
         PartyManager.getInstance().getPlayerPartyMap().put(player, this);
     }
