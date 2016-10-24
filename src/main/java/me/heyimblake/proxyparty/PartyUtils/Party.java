@@ -101,6 +101,13 @@ public class Party {
         getLeader().sendMessage(Constants.TAG, name, message);
     }
 
+    public void sendMessage(String string, ChatColor chatColor) {
+        TextComponent message = new TextComponent(string);
+        message.setColor(chatColor);
+        getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, message));
+        getLeader().sendMessage(Constants.TAG, message);
+    }
+
     public void disband() {
         ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyDisbandEvent(this));
         this.getParticipants().forEach(participant -> PartyManager.getInstance().getPlayerPartyMap().remove(participant));

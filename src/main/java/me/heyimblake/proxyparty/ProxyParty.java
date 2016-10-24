@@ -33,5 +33,6 @@ public final class ProxyParty extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PartyCreateListener());
         getProxy().getPluginManager().registerListener(this, new PartyPlayerJoinListener());
         getProxy().getPluginManager().registerListener(this, new PartyPlayerQuitListener());
+        getProxy().getPluginManager().registerListener(this, new PartyDisbandListener());
     }
 }
