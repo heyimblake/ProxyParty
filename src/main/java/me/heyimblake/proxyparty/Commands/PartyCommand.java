@@ -30,12 +30,14 @@ public class PartyCommand extends Command {
     private static Set<Class<? extends AnnotatedPartySubCommand>> defaultSubCommandClasses = new HashSet<>();
 
     public PartyCommand() {
-        super("party");
+        super("party", null, "p");
         defaultSubCommandClasses.add(InviteSubCommand.class);
         defaultSubCommandClasses.add(AcceptSubCommand.class);
         defaultSubCommandClasses.add(DenySubCommand.class);
         defaultSubCommandClasses.add(ListSubCommand.class);
         defaultSubCommandClasses.add(ChatSubCommand.class);
+        defaultSubCommandClasses.add(LeaveSubCommand.class);
+        defaultSubCommandClasses.add(PromoteSubCommand.class);
         defaultSubCommandClasses.add(DisbandSubCommand.class);
         registerDefaultSubCommands();
     }
