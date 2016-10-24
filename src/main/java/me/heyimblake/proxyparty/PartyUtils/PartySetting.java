@@ -32,4 +32,8 @@ public enum PartySetting {
     public void remove(ProxiedPlayer player) {
         this.players.remove(player);
     }
+
+    public boolean isEnabledFor(ProxiedPlayer player) {
+        return getPlayers().contains(player);
+    }
 }

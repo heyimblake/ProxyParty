@@ -35,6 +35,7 @@ public class PartyCommand extends Command {
         defaultSubCommandClasses.add(AcceptSubCommand.class);
         defaultSubCommandClasses.add(DenySubCommand.class);
         defaultSubCommandClasses.add(ListSubCommand.class);
+        defaultSubCommandClasses.add(ChatSubCommand.class);
         defaultSubCommandClasses.add(DisbandSubCommand.class);
         registerDefaultSubCommands();
     }
