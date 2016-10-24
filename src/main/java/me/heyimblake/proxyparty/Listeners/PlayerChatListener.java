@@ -3,11 +3,14 @@ package me.heyimblake.proxyparty.Listeners;
 import me.heyimblake.proxyparty.PartyUtils.Party;
 import me.heyimblake.proxyparty.PartyUtils.PartyManager;
 import me.heyimblake.proxyparty.PartyUtils.PartySetting;
+import me.heyimblake.proxyparty.ProxyParty;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
+
+import java.util.logging.Level;
 
 /**
  * Created by heyimblake on 10/21/2016.
@@ -31,5 +34,6 @@ public class PlayerChatListener implements Listener {
             return;
         event.setCancelled(true);
         party.sendMessage(player, event.getMessage());
+        ProxyParty.getInstance().getLogger().log(Level.INFO, party.getLeader() + "'s PARTY CHAT: " + player.getName() + ": " + event.getMessage());
     }
 }
