@@ -57,6 +57,8 @@ public class PartyCommand extends Command {
                     if (handler.getArguments().length == 0 && getSubCommandClassAnnotation(clazz).requiresArgumentCompletion()) {
                         TextComponent usage = new TextComponent(getSubCommandClassAnnotation(clazz).syntax());
                         usage.setColor(ChatColor.AQUA);
+                        usage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, getSubCommandClassAnnotation(clazz).subCommand() + " "));
+                        usage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(ChatColor.YELLOW + "Click to prepare command.")}));
                         sender.sendMessage(Constants.TAG, new TextComponent("Usage: "), usage);
                         return;
                     }
@@ -96,10 +98,10 @@ public class PartyCommand extends Command {
         topMSG.setColor(ChatColor.LIGHT_PURPLE);
         topMSG.setBold(true);
         sender.sendMessage(topMSG);
+        TextComponent prepareMSG = new TextComponent("Click to prepare this command.");
+        prepareMSG.setColor(ChatColor.YELLOW);
+        prepareMSG.setItalic(true);
         for (Class<? extends AnnotatedPartySubCommand> clazz : subCommandClasses.values()) {
-            TextComponent prepareMSG = new TextComponent("Click to prepare to run this command.");
-            prepareMSG.setColor(ChatColor.YELLOW);
-            prepareMSG.setItalic(true);
             TextComponent pt1 = new TextComponent("" + '\u25CF' + " ");
             pt1.setColor(ChatColor.DARK_AQUA);
             TextComponent pt2 = new TextComponent(getSubCommandClassAnnotation(clazz).syntax());
