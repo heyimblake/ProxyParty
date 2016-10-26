@@ -5,6 +5,7 @@ import me.heyimblake.proxyparty.PartyUtils.PartyManager;
 import me.heyimblake.proxyparty.PartyUtils.PartyRole;
 import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.Utils.Constants;
+import me.heyimblake.proxyparty.Utils.MiscMemory;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -37,14 +38,14 @@ public class PlayerServerSwitchListener implements Listener {
             party.getLeader().sendMessage(Constants.TAG, msg1);
             return;
         }
-
-        ServerInfo hub = ProxyParty.getInstance().getProxy().getServerInfo("HUB");
-        player.connect(hub);
-
-        TextComponent msg = new TextComponent("Only party leaders can join servers whilst in a party!");
-        msg.setColor(ChatColor.RED);
-        msg.setBold(true);
-
-        player.sendMessage(Constants.TAG, msg);
+        if (!MiscMemory.SERVER_JOIN_BYPASS.contains(player)) {
+            ServerInfo hub = ProxyParty.getInstance().getProxy().getServerInfo("HUB");
+            player.connect(hub);
+            TextComponent msg = new TextComponent("Only party leaders can join servers whilst in a party!");
+            msg.setColor(ChatColor.RED);
+            msg.setBold(true);
+            player.sendMessage(Constants.TAG, msg);
+            return;
+        }
     }
 }

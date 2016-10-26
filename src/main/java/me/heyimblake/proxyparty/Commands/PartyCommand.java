@@ -40,6 +40,7 @@ public class PartyCommand extends Command {
         defaultSubCommandClasses.add(RetractSubCommand.class);
         defaultSubCommandClasses.add(KickSubCommand.class);
         defaultSubCommandClasses.add(ChatSubCommand.class);
+        defaultSubCommandClasses.add(WarpSubCommand.class);
         defaultSubCommandClasses.add(LeaveSubCommand.class);
         defaultSubCommandClasses.add(PromoteSubCommand.class);
         defaultSubCommandClasses.add(DisbandSubCommand.class);
