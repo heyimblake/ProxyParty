@@ -2,4 +2,4 @@ name: ProxyParty
 version: ${project.version}
 main: me.heyimblake.proxyparty.ProxyParty
 author: heyimblake
-description: PartyUtils System for a BungeeCord proxy server.
+description: Party System for a BungeeCord proxy server.
