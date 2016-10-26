@@ -49,7 +49,7 @@ public class PromoteSubCommand extends AnnotatedPartySubCommand {
             return;
         }
         party.setLeader(target);
-        TextComponent msg = new TextComponent("You've promoted " + target.getName() + "to Party Leader!");
+        TextComponent msg = new TextComponent("You've promoted " + target.getName() + " to Party Leader!");
         msg.setColor(ChatColor.YELLOW);
         player.sendMessage(Constants.TAG, msg);
     }
