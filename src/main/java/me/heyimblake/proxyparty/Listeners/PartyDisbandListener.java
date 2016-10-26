@@ -1,8 +1,8 @@
-package me.heyimblake.proxyparty.Listeners;
+package me.heyimblake.proxyparty.listeners;
 
-import me.heyimblake.proxyparty.Events.PartyDisbandEvent;
-import me.heyimblake.proxyparty.PartyUtils.Party;
 import me.heyimblake.proxyparty.ProxyParty;
+import me.heyimblake.proxyparty.events.PartyDisbandEvent;
+import me.heyimblake.proxyparty.partyutils.Party;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;

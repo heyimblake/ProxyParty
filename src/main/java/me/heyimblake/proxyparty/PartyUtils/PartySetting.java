@@ -1,4 +1,4 @@
-package me.heyimblake.proxyparty.PartyUtils;
+package me.heyimblake.proxyparty.partyutils;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 

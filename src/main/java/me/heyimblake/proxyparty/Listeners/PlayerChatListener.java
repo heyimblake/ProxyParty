@@ -1,9 +1,9 @@
-package me.heyimblake.proxyparty.Listeners;
+package me.heyimblake.proxyparty.listeners;
 
-import me.heyimblake.proxyparty.PartyUtils.Party;
-import me.heyimblake.proxyparty.PartyUtils.PartyManager;
-import me.heyimblake.proxyparty.PartyUtils.PartySetting;
 import me.heyimblake.proxyparty.ProxyParty;
+import me.heyimblake.proxyparty.partyutils.Party;
+import me.heyimblake.proxyparty.partyutils.PartyManager;
+import me.heyimblake.proxyparty.partyutils.PartySetting;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;

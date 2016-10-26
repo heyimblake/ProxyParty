@@ -1,8 +1,8 @@
-package me.heyimblake.proxyparty.Listeners;
+package me.heyimblake.proxyparty.listeners;
 
-import me.heyimblake.proxyparty.Events.PartyCreateEvent;
 import me.heyimblake.proxyparty.ProxyParty;
-import me.heyimblake.proxyparty.Utils.Constants;
+import me.heyimblake.proxyparty.events.PartyCreateEvent;
+import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

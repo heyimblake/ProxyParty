@@ -1,4 +1,4 @@
-package me.heyimblake.proxyparty.Utils;
+package me.heyimblake.proxyparty.utils;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;

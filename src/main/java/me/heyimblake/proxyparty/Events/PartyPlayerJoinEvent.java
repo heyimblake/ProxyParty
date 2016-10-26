@@ -1,6 +1,6 @@
-package me.heyimblake.proxyparty.Events;
+package me.heyimblake.proxyparty.events;
 
-import me.heyimblake.proxyparty.PartyUtils.Party;
+import me.heyimblake.proxyparty.partyutils.Party;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Event;
 

@@ -1,4 +1,4 @@
-package me.heyimblake.proxyparty.Commands;
+package me.heyimblake.proxyparty.commands;
 
 import java.lang.annotation.*;
 

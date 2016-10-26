@@ -1,7 +1,7 @@
-package me.heyimblake.proxyparty.Listeners;
+package me.heyimblake.proxyparty.listeners;
 
-import me.heyimblake.proxyparty.Events.PartyPromoteEvent;
 import me.heyimblake.proxyparty.ProxyParty;
+import me.heyimblake.proxyparty.events.PartyPromoteEvent;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;

@@ -1,11 +1,11 @@
-package me.heyimblake.proxyparty.Listeners;
+package me.heyimblake.proxyparty.listeners;
 
-import me.heyimblake.proxyparty.PartyUtils.Party;
-import me.heyimblake.proxyparty.PartyUtils.PartyManager;
-import me.heyimblake.proxyparty.PartyUtils.PartyRole;
 import me.heyimblake.proxyparty.ProxyParty;
-import me.heyimblake.proxyparty.Utils.Constants;
-import me.heyimblake.proxyparty.Utils.MiscMemory;
+import me.heyimblake.proxyparty.partyutils.Party;
+import me.heyimblake.proxyparty.partyutils.PartyManager;
+import me.heyimblake.proxyparty.partyutils.PartyRole;
+import me.heyimblake.proxyparty.utils.Constants;
+import me.heyimblake.proxyparty.utils.MiscMemory;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;

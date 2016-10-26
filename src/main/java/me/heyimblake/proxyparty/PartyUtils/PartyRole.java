@@ -1,4 +1,4 @@
-package me.heyimblake.proxyparty.PartyUtils;
+package me.heyimblake.proxyparty.partyutils;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -16,9 +16,9 @@ public enum PartyRole {
     LEADER,
     PARTICIPANT;
 
-    private static Map<ProxiedPlayer, me.heyimblake.proxyparty.PartyUtils.PartyRole> playerPartyRoleMap = new HashMap<>();
+    private static Map<ProxiedPlayer, me.heyimblake.proxyparty.partyutils.PartyRole> playerPartyRoleMap = new HashMap<>();
 
-    public static me.heyimblake.proxyparty.PartyUtils.PartyRole getRoleOf(ProxiedPlayer player) {
+    public static me.heyimblake.proxyparty.partyutils.PartyRole getRoleOf(ProxiedPlayer player) {
         return playerPartyRoleMap.get(player);
     }
 
@@ -26,7 +26,7 @@ public enum PartyRole {
         playerPartyRoleMap.remove(player);
     }
 
-    public static void setRoleOf(ProxiedPlayer player, me.heyimblake.proxyparty.PartyUtils.PartyRole role) {
+    public static void setRoleOf(ProxiedPlayer player, me.heyimblake.proxyparty.partyutils.PartyRole role) {
         if (playerPartyRoleMap.containsKey(player))
             playerPartyRoleMap.remove(player);
         playerPartyRoleMap.put(player, role);

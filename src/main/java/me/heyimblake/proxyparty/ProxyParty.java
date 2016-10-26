@@ -1,7 +1,7 @@
 package me.heyimblake.proxyparty;
 
-import me.heyimblake.proxyparty.Commands.PartyCommand;
-import me.heyimblake.proxyparty.Listeners.*;
+import me.heyimblake.proxyparty.commands.PartyCommand;
+import me.heyimblake.proxyparty.listeners.*;
 import net.md_5.bungee.api.plugin.Plugin;
 
 

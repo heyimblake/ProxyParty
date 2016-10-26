@@ -1,9 +1,9 @@
-package me.heyimblake.proxyparty.Commands;
+package me.heyimblake.proxyparty.commands;
 
-import me.heyimblake.proxyparty.Commands.Subcommands.*;
-import me.heyimblake.proxyparty.PartyUtils.PartyManager;
-import me.heyimblake.proxyparty.PartyUtils.PartyRole;
-import me.heyimblake.proxyparty.Utils.Constants;
+import me.heyimblake.proxyparty.commands.subcommands.*;
+import me.heyimblake.proxyparty.partyutils.PartyManager;
+import me.heyimblake.proxyparty.partyutils.PartyRole;
+import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -101,7 +101,7 @@ public class PartyCommand extends Command {
 
 
     private void showHelpMessage(CommandSender sender) {
-        TextComponent topMSG = new TextComponent("Party Commands:");
+        TextComponent topMSG = new TextComponent("Party commands:");
         topMSG.setColor(ChatColor.LIGHT_PURPLE);
         topMSG.setBold(true);
         sender.sendMessage(topMSG);

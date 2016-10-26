@@ -1,4 +1,4 @@
-package me.heyimblake.proxyparty.Commands;
+package me.heyimblake.proxyparty.commands;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
