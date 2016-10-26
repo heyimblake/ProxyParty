@@ -58,10 +58,6 @@ public class KickSubCommand extends AnnotatedPartySubCommand {
         TextComponent msg = new TextComponent("You kicked " + target.getName() + " out of the party!");
         msg.setColor(ChatColor.YELLOW);
         player.sendMessage(Constants.TAG, msg);
-        TextComponent targetMsg = new TextComponent("You were removed from the party.");
-        targetMsg.setBold(true);
-        targetMsg.setColor(ChatColor.RED);
-        target.sendMessage(Constants.TAG, targetMsg);
     }
 
     @Override
