@@ -4,6 +4,7 @@ import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
 import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.events.PartyDenyInviteEvent;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.Constants;
@@ -54,6 +55,7 @@ public class DenySubCommand extends AnnotatedPartySubCommand {
             return;
         }
         party.getInvited().remove(player);
+        ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyDenyInviteEvent(party, player));
         TextComponent msg = new TextComponent("You declined " + target.getName() + "'s party invitation.");
         msg.setColor(ChatColor.AQUA);
         player.sendMessage(Constants.TAG, msg);

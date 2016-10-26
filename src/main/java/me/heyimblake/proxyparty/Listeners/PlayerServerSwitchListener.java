@@ -29,9 +29,6 @@ public class PlayerServerSwitchListener implements Listener {
             return;
         Party party = PartyManager.getInstance().getPartyOf(player);
         if (PartyRole.getRoleOf(player) == PartyRole.LEADER) {
-            TextComponent msg = new TextComponent("Sending you to your party leader's server!");
-            msg.setColor(ChatColor.AQUA);
-            party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, msg));
             party.warpParticipants(player.getServer().getInfo());
             TextComponent msg1 = new TextComponent("Attempting to send all party members to your server.");
             msg1.setColor(ChatColor.DARK_AQUA);

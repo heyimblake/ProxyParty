@@ -52,7 +52,7 @@ public class AcceptSubCommand extends AnnotatedPartySubCommand {
             player.sendMessage(Constants.TAG, msg);
             return;
         }
-        if (PartyManager.getInstance().getPartyOf(target).getParticipants().contains(player)) {
+        if (PartyManager.getInstance().getPartyOf(target).getInvited().contains(player)) {
             TextComponent msg = new TextComponent("You've joined " + target.getName() + "'s Party!");
             msg.setColor(ChatColor.AQUA);
             Party party = PartyManager.getInstance().getPartyOf(target);

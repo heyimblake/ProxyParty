@@ -4,6 +4,7 @@ import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
 import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.events.PartyRetractInviteEvent;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.Constants;
@@ -48,6 +49,7 @@ public class RetractSubCommand extends AnnotatedPartySubCommand {
             return;
         }
         party.retractInvite(target);
+        ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyRetractInviteEvent(party, target));
         TextComponent msg = new TextComponent("You retracted the invite of " + target.getName());
         msg.setColor(ChatColor.AQUA);
         player.sendMessage(Constants.TAG, msg);

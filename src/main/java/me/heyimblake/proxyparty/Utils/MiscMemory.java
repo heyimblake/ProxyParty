@@ -13,5 +13,5 @@ import java.util.Set;
  *         All rights reserved.
  */
 public class MiscMemory {
-    public static final Set<ProxiedPlayer> SERVER_JOIN_BYPASS = new HashSet<>();
+    public static Set<ProxiedPlayer> SERVER_JOIN_BYPASS = new HashSet<>();
 }

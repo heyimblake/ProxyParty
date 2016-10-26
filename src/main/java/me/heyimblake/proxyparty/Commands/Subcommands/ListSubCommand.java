@@ -41,12 +41,13 @@ public class ListSubCommand extends AnnotatedPartySubCommand {
         line2.setColor(ChatColor.AQUA);
 
         String allParticipants = "";
-        party.getParticipants().forEach(participants -> allParticipants.concat(participants.getName() + ", "));
-        TextComponent line3 = new TextComponent(allParticipants);
+        for (ProxiedPlayer participant : party.getParticipants()) {
+            allParticipants = allParticipants + participant.getName() + ", ";
+        }
 
         player.sendMessage(Constants.TAG, line1);
         player.sendMessage(Constants.TAG, line2);
-        player.sendMessage(Constants.TAG, line3);
+        player.sendMessage(Constants.TAG, new TextComponent(allParticipants));
     }
 
     @Override
