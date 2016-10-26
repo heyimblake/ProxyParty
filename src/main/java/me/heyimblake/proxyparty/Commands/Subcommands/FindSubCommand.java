@@ -20,7 +20,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  */
 @PartySubCommandExecutor(subCommand = "find",
         syntax = "/party find <Player>",
-        description = "Finds a player participant.",
+        description = "Finds a party participant.",
         requiresArgumentCompletion = true,
         leaderExclusive = false,
         mustBeInParty = true)
