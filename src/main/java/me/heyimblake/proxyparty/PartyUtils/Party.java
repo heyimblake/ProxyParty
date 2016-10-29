@@ -3,7 +3,6 @@ package me.heyimblake.proxyparty.partyutils;
 import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.events.*;
 import me.heyimblake.proxyparty.utils.Constants;
-import me.heyimblake.proxyparty.utils.MiscMemory;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -96,10 +95,8 @@ public class Party {
     }
 
     public void warpParticipants(ServerInfo serverInfo) {
-        this.participants.forEach(participant -> MiscMemory.SERVER_JOIN_BYPASS.add(participant));
         ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyWarpEvent(this));
         this.participants.forEach(participant -> participant.connect(serverInfo));
-        this.participants.forEach(participant -> MiscMemory.SERVER_JOIN_BYPASS.remove(participant));
     }
 
     public void sendMessage(ProxiedPlayer player, String string) {
