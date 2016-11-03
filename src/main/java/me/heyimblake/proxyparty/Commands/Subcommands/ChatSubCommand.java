@@ -39,9 +39,9 @@ public class ChatSubCommand extends AnnotatedPartySubCommand {
             String msg = !PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player) ? "All messages will now be sent to party chat." : "All messages will no longer be sent to party chat.";
             ChatColor color = !PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player) ? ChatColor.GREEN : ChatColor.RED;
             if (PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player))
-                PartySetting.PARTY_CHAT_TOGGLE_ON.remove(player);
+                PartySetting.PARTY_CHAT_TOGGLE_ON.disable(player);
             else
-                PartySetting.PARTY_CHAT_TOGGLE_ON.add(player);
+                PartySetting.PARTY_CHAT_TOGGLE_ON.enable(player);
             TextComponent message = new TextComponent(msg);
             message.setColor(color);
             player.sendMessage(Constants.TAG, message);
