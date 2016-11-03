@@ -21,7 +21,7 @@ public class PartyPromoteListener implements Listener {
         ProxiedPlayer player = event.getPromoted();
         if (event.getPromoter() != null) {
             event.getParty().sendMessage(player.getName() + " was promoted to Party Leader!", ChatColor.YELLOW);
-            ProxyParty.getInstance().getLogger().log(Level.INFO, player.getName() + "was promoted to Party Leader by " + event.getPromoter().getName());
+            ProxyParty.getInstance().getLogger().log(Level.INFO, player.getName() + " was promoted to Party Leader by " + event.getPromoter().getName());
         }
     }
 }
