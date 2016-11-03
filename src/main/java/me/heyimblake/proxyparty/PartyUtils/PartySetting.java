@@ -16,22 +16,44 @@ public enum PartySetting {
 
     private Set<ProxiedPlayer> players;
 
+
     PartySetting(Set<ProxiedPlayer> players) {
         this.players = players;
     }
 
+    /**
+     * Gets a set of player for which the current PartySetting is active for.
+     *
+     * @return set of player with this setting currently active
+     */
     public Set<ProxiedPlayer> getPlayers() {
         return this.players;
     }
 
-    public void add(ProxiedPlayer player) {
+    /**
+     * Enables a PartySetting for a specified player.
+     *
+     * @param player the player to enable the partysetting for
+     */
+    public void enable(ProxiedPlayer player) {
         this.players.add(player);
     }
 
-    public void remove(ProxiedPlayer player) {
+    /**
+     * Disables a PartySetting for a specified player.
+     *
+     * @param player the player to disable the partysetting for
+     */
+    public void disable(ProxiedPlayer player) {
         this.players.remove(player);
     }
 
+    /**
+     * Sees if a supplied player has the current PartySetting enabled.
+     *
+     * @param player the player to check for
+     * @return true if the player has this partysetting enabled, false otherwise
+     */
     public boolean isEnabledFor(ProxiedPlayer player) {
         return getPlayers().contains(player);
     }

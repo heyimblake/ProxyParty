@@ -27,18 +27,40 @@ public class PartyManager {
         return instance;
     }
 
+    /**
+     * Gets the instance of the party of which a player is in.
+     *
+     * @param player the player in the party
+     * @return the party of the specified player, null if there is not a party
+     */
     public Party getPartyOf(ProxiedPlayer player) {
-        return this.playerPartyMap.get(player);
+        return this.playerPartyMap.getOrDefault(player, null);
     }
 
+    /**
+     * Gets a map of players and their party instances.
+     *
+     * @return map of players and party instances
+     */
     public Map<ProxiedPlayer, Party> getPlayerPartyMap() {
         return this.playerPartyMap;
     }
 
+    /**
+     * See if a specified player is a participant or leader of a party.
+     *
+     * @param player the player to check their party status
+     * @return true if player has a party, false otherwise
+     */
     public boolean hasParty(ProxiedPlayer player) {
         return this.playerPartyMap.containsKey(player);
     }
 
+    /**
+     * Get a set of active party instances.
+     *
+     * @return set of active party instances
+     */
     public Set<Party> getActiveParties() {
         return this.activeParties;
     }
