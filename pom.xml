@@ -7,11 +7,11 @@
     <groupId>me.heyimblake</groupId>
     <artifactId>ProxyParty</artifactId>
     <version>1.0.0</version>
+    <url>https://heyimblake.me</url>
     <packaging>jar</packaging>
-
     <name>ProxyParty</name>
-
-    <description>Party System for a BungeeCord proxy server.</description>
+    
+    <description>A party plugin for Bungeecord proxy servers.</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
