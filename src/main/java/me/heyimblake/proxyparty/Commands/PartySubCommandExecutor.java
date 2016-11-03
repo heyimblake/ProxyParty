@@ -6,8 +6,7 @@ import java.lang.annotation.*;
  * Created by heyimblake on 10/21/2016.
  *
  * @author heyimblake
- *         Copyright (c) 2016 heyimblake.
- *         All rights reserved.
+ *         https://heyimblake.me
  */
 @Documented
 @Target(ElementType.TYPE)

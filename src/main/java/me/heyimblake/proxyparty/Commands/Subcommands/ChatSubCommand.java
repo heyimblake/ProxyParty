@@ -18,8 +18,7 @@ import java.util.logging.Level;
  * Created by heyimblake on 10/21/2016.
  *
  * @author heyimblake
- *         Copyright (c) 2016 heyimblake.
- *         All rights reserved.
+ *         https://heyimblake.me
  */
 @PartySubCommandExecutor(subCommand = "chat",
         syntax = "/party chat (Message)",

@@ -8,8 +8,7 @@ import net.md_5.bungee.api.plugin.Event;
  * Created by heyimblake on 10/26/2016.
  *
  * @author heyimblake
- *         Copyright (c) 2016 heyimblake.
- *         All rights reserved.
+ *         https://heyimblake.me
  */
 public class PartyDenyInviteEvent extends Event {
     private Party party;

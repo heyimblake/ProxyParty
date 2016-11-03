@@ -12,8 +12,7 @@ import net.md_5.bungee.event.EventHandler;
  * Created by heyimblake on 10/26/2016.
  *
  * @author heyimblake
- *         Copyright (c) 2016 heyimblake.
- *         All rights reserved.
+ *         https://heyimblake.me
  */
 public class PartyKickListener implements Listener {
     @EventHandler

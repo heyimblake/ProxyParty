@@ -11,11 +11,8 @@ import java.util.Set;
  * Created by heyimblake on 10/21/2016.
  *
  * @author heyimblake
- *         Copyright (c) 2016 heyimblake.
- *         All rights reserved.
+ *         https://heyimblake.me
  */
-
-
 public class PartyManager {
     private static PartyManager instance = new PartyManager();
     private Map<ProxiedPlayer, Party> playerPartyMap;

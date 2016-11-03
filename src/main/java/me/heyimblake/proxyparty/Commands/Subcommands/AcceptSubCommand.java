@@ -15,8 +15,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * Created by heyimblake on 10/23/2016.
  *
  * @author heyimblake
- *         Copyright (c) 2016 heyimblake.
- *         All rights reserved.
+ *         https://heyimblake.me
  */
 @PartySubCommandExecutor(subCommand = "accept",
         syntax = "/party accept <Player>",

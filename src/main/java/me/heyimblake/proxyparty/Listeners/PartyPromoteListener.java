@@ -13,8 +13,7 @@ import java.util.logging.Level;
  * Created by heyimblake on 10/24/2016.
  *
  * @author heyimblake
- *         Copyright (c) 2016 heyimblake.
- *         All rights reserved.
+ *         https://heyimblake.me
  */
 public class PartyPromoteListener implements Listener {
     @EventHandler

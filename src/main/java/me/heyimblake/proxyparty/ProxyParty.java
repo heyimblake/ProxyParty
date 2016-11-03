@@ -4,7 +4,12 @@ import me.heyimblake.proxyparty.commands.PartyCommand;
 import me.heyimblake.proxyparty.listeners.*;
 import net.md_5.bungee.api.plugin.Plugin;
 
-
+/**
+ * Created by heyimblake on 10/21/2016.
+ *
+ * @author heyimblake
+ *         https://heyimblake.me
+ */
 public final class ProxyParty extends Plugin {
     private static ProxyParty instance;
 

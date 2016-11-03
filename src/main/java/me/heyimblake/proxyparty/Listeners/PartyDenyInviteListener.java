@@ -10,11 +10,10 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 /**
- * Created by heyimblake on 10/26/2016.
+ * Created by heyimblake on 11/3/2016.
  *
  * @author heyimblake
- *         Copyright (c) 2016 heyimblake.
- *         All rights reserved.
+ *         https://heyimblake.me
  */
 public class PartyDenyInviteListener implements Listener {
     @EventHandler

@@ -9,8 +9,7 @@ import java.util.Map;
  * Created by heyimblake on 10/22/2016.
  *
  * @author heyimblake
- *         Copyright (c) 2016 heyimblake.
- *         All rights reserved.
+ *         https://heyimblake.me
  */
 public enum PartyRole {
     LEADER,
