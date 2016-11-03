@@ -100,16 +100,16 @@ public class PartyCommand extends Command {
 
 
     private void showHelpMessage(CommandSender sender) {
-        TextComponent topMSG = new TextComponent("Party commands:");
+        TextComponent topMSG = new TextComponent("Party Commands:");
         topMSG.setColor(ChatColor.LIGHT_PURPLE);
         topMSG.setBold(true);
         sender.sendMessage(topMSG);
         TextComponent prepareMSG = new TextComponent("Click to prepare this command.");
         prepareMSG.setColor(ChatColor.YELLOW);
         prepareMSG.setItalic(true);
+        TextComponent pt1 = new TextComponent("" + '\u25CF' + " ");
+        pt1.setColor(ChatColor.DARK_AQUA);
         for (Class<? extends AnnotatedPartySubCommand> clazz : subCommandClasses.values()) {
-            TextComponent pt1 = new TextComponent("" + '\u25CF' + " ");
-            pt1.setColor(ChatColor.DARK_AQUA);
             TextComponent pt2 = new TextComponent(getSubCommandClassAnnotation(clazz).syntax());
             pt2.setColor(ChatColor.AQUA);
             pt2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{prepareMSG}));
