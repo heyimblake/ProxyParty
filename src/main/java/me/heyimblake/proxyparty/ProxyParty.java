@@ -44,5 +44,6 @@ public final class ProxyParty extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PartyDenyInviteListener());
         getProxy().getPluginManager().registerListener(this, new PartyWarpListener());
         getProxy().getPluginManager().registerListener(this, new PartyRetractInviteListener());
+        getProxy().getPluginManager().registerListener(this, new PartyAcceptInviteListener());
     }
 }

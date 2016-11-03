@@ -4,6 +4,7 @@ import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
 import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.events.PartyAcceptInviteEvent;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.Constants;
@@ -58,6 +59,7 @@ public class AcceptSubCommand extends AnnotatedPartySubCommand {
             party.addParticipant(player);
             party.getInvited().remove(player);
             player.sendMessage(Constants.TAG, msg);
+            ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyAcceptInviteEvent(party, player));
             return;
         }
         TextComponent msg = new TextComponent("You have no pending invites for this party.");
