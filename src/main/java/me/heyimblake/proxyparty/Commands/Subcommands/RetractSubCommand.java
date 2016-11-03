@@ -19,7 +19,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  *         https://heyimblake.me
  */
 @PartySubCommandExecutor(subCommand = "retract",
-        syntax = "/party retract <Name>",
+        syntax = "/party retract <Player>",
         description = "Retracts an invite from a player.",
         requiresArgumentCompletion = true,
         leaderExclusive = true,
