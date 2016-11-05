@@ -33,7 +33,7 @@ public class PlayerServerSwitchListener implements Listener {
             return;
         }
         if (!player.getServer().getInfo().getName().equalsIgnoreCase(leader.getServer().getInfo().getName())) {
-            player.connect(player.getReconnectServer());
+            player.connect(leader.getServer().getInfo());
             TextComponent msg = new TextComponent("Only party leaders can join servers whilst in a party!");
             msg.setColor(ChatColor.RED);
             msg.setBold(true);
