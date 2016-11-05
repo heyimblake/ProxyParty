@@ -49,7 +49,7 @@ public class InviteSubCommand extends AnnotatedPartySubCommand {
             return;
         }
         Party party = !PartyManager.getInstance().hasParty(player) ? new PartyCreator().setLeader(player).create() : PartyManager.getInstance().getPartyOf(player);
-        if (party.getParticipants().contains(target)) {
+        if (party.getInvited().contains(target)) {
             TextComponent msg = new TextComponent("This player is already invited to your party!");
             msg.setColor(ChatColor.RED);
             player.sendMessage(Constants.TAG, msg);
