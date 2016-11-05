@@ -27,6 +27,6 @@ public class PlayerQuitListener implements Listener {
             return;
         }
         party.removeParticipant(player);
-        PartyManager.getInstance().getActiveParties().forEach(party1 -> party.getInvited().remove(player));
+        PartyManager.getInstance().getActiveParties().forEach(party1 -> party1.getInvited().remove(player));
     }
 }
