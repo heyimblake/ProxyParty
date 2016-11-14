@@ -1,4 +1,6 @@
-# ProxyParty
+# ProxyParty 
+[![Build Status](https://drone.io/github.com/heyimblake/ProxyParty/status.png)](https://drone.io/github.com/heyimblake/ProxyParty/latest)
+
 A party plugin for [Bungeecord](https://github.com/SpigotMC/BungeeCord) proxy servers.
 
 ## Getting Started
