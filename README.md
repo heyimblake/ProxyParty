@@ -3,6 +3,8 @@
 
 A party plugin for [Bungeecord](https://github.com/SpigotMC/BungeeCord) proxy servers.
 
+Latest Download (.jar): https://drone.io/github.com/heyimblake/ProxyParty/files/target/ProxyParty.jar
+
 ## Getting Started
 
 [Read the Wiki!](https://github.com/heyimblake/ProxyParty/wiki) You can find everything there, from the features and requirements of the plugin, to how to install it.
