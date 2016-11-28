@@ -7,6 +7,7 @@ import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyCreator;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
+import me.heyimblake.proxyparty.partyutils.PartySetting;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -51,6 +52,12 @@ public class InviteSubCommand extends AnnotatedPartySubCommand {
         Party party = !PartyManager.getInstance().hasParty(player) ? new PartyCreator().setLeader(player).create() : PartyManager.getInstance().getPartyOf(player);
         if (party.getInvited().contains(target)) {
             TextComponent msg = new TextComponent("This player is already invited to your party!");
+            msg.setColor(ChatColor.RED);
+            player.sendMessage(Constants.TAG, msg);
+            return;
+        }
+        if (PartySetting.PARTY_INVITE_RECIEVE_TOGGLE_OFF.getPlayers().contains(target)) {
+            TextComponent msg = new TextComponent("This player is currently not accepting party invitations.");
             msg.setColor(ChatColor.RED);
             player.sendMessage(Constants.TAG, msg);
             return;

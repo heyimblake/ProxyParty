@@ -43,6 +43,7 @@ public class PartyCommand extends Command {
         defaultSubCommandClasses.add(LeaveSubCommand.class);
         defaultSubCommandClasses.add(PromoteSubCommand.class);
         defaultSubCommandClasses.add(DisbandSubCommand.class);
+        defaultSubCommandClasses.add(ToggleSubCommand.class);
         registerDefaultSubCommands();
     }
 
@@ -115,14 +116,17 @@ public class PartyCommand extends Command {
         TextComponent pt1 = new TextComponent("" + '\u25CF' + " ");
         for (Class<? extends AnnotatedPartySubCommand> clazz : subCommandClasses.values()) {
 
-            //Bullet Colors tell if the player can run the command or not. Just for a quick glance.
-            ChatColor bulletColor;
-            if (getSubCommandClassAnnotation(clazz).subCommand().equalsIgnoreCase("invite")) {
-                bulletColor = !PartyManager.getInstance().hasParty(player) || PartyRole.getRoleOf(player) == PartyRole.LEADER ? ChatColor.DARK_GREEN : ChatColor.DARK_RED;
-            } else if (getSubCommandClassAnnotation(clazz).mustBeInParty()) {
-                bulletColor = PartyManager.getInstance().hasParty(player) ? ChatColor.DARK_GREEN : ChatColor.DARK_RED;
-            } else {
-                bulletColor = (getSubCommandClassAnnotation(clazz).leaderExclusive() && PartyRole.getRoleOf(player) == PartyRole.LEADER) ? ChatColor.DARK_GREEN : ChatColor.DARK_RED;
+            //Bullet colors tell if the player can run the command or not. Just for a quick glance.
+            ChatColor bulletColor = ChatColor.DARK_GREEN;
+            if (getSubCommandClassAnnotation(clazz).mustBeInParty()) {
+                if (!PartyManager.getInstance().hasParty(player)) {
+                    bulletColor = ChatColor.DARK_RED;
+                } else {
+                    if (getSubCommandClassAnnotation(clazz).leaderExclusive()) {
+                        if (PartyRole.getRoleOf(player) != PartyRole.LEADER)
+                            bulletColor = ChatColor.DARK_RED;
+                    }
+                }
             }
             pt1.setColor(bulletColor);
 
@@ -137,7 +141,6 @@ public class PartyCommand extends Command {
             player.sendMessage(pt1, pt2, pt3, pt4);
         }
         player.sendMessage(new TextComponent(" "));
-
     }
 
     private void registerDefaultSubCommands() {
