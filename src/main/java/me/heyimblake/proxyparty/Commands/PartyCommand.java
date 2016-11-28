@@ -29,7 +29,7 @@ public class PartyCommand extends Command {
     private static Set<Class<? extends AnnotatedPartySubCommand>> defaultSubCommandClasses = new HashSet<>();
 
     public PartyCommand() {
-        super("party", null, "p");
+        super("party", null);
         defaultSubCommandClasses.add(InviteSubCommand.class);
         defaultSubCommandClasses.add(AcceptSubCommand.class);
         defaultSubCommandClasses.add(DenySubCommand.class);
@@ -48,16 +48,21 @@ public class PartyCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
+        if (!(sender instanceof ProxiedPlayer)) {
+            sender.sendMessage(Constants.TAG, new TextComponent("You must be a player in order to execute party commands."));
+            return;
+        }
+        ProxiedPlayer player = ((ProxiedPlayer) sender);
         if (args.length > 0) {
             PartySubCommandHandler handler = new PartySubCommandHandler(sender, Arrays.copyOfRange(args, 1, args.length));
             String subCMDInput = args[0];
             for (String key : subCommandClasses.keySet()) {
                 Class<? extends AnnotatedPartySubCommand> clazz = subCommandClasses.get(key);
                 if (key.equalsIgnoreCase(subCMDInput)) {
-                    if (sender instanceof ProxiedPlayer && PartyRole.getRoleOf(((ProxiedPlayer) sender)) == PartyRole.PARTICIPANT && getSubCommandClassAnnotation(clazz).leaderExclusive()) {
+                    if (PartyRole.getRoleOf(player) == PartyRole.PARTICIPANT && getSubCommandClassAnnotation(clazz).leaderExclusive()) {
                         TextComponent errmsg = new TextComponent("You must be the party leader in order to do this.");
                         errmsg.setColor(ChatColor.RED);
-                        sender.sendMessage(Constants.TAG, errmsg);
+                        player.sendMessage(Constants.TAG, errmsg);
                         return;
                     }
                     if (handler.getArguments().length == 0 && getSubCommandClassAnnotation(clazz).requiresArgumentCompletion()) {
@@ -65,23 +70,23 @@ public class PartyCommand extends Command {
                         usage.setColor(ChatColor.AQUA);
                         usage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/party " + getSubCommandClassAnnotation(clazz).subCommand() + " "));
                         usage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(ChatColor.YELLOW + "Click to prepare command.")}));
-                        sender.sendMessage(Constants.TAG, new TextComponent("Usage: "), usage);
+                        player.sendMessage(Constants.TAG, new TextComponent("Usage: "), usage);
                         return;
                     }
-                    if (sender instanceof ProxiedPlayer && PartyManager.getInstance().getPartyOf(((ProxiedPlayer) sender)) == null && getSubCommandClassAnnotation(clazz).mustBeInParty()) {
+                    if (PartyManager.getInstance().getPartyOf(player) == null && getSubCommandClassAnnotation(clazz).mustBeInParty()) {
                         TextComponent errmsg = new TextComponent("You must be in a party in order to do this!");
                         errmsg.setColor(ChatColor.RED);
-                        sender.sendMessage(Constants.TAG, errmsg);
+                        player.sendMessage(Constants.TAG, errmsg);
                         return;
                     }
                     performSubCommand(clazz, handler);
                     return;
                 }
             }
-            showHelpMessage(sender);
+            showHelpMessage(player);
             return;
         }
-        showHelpMessage(sender);
+        showHelpMessage(player);
     }
 
     private void performSubCommand(Class<? extends AnnotatedPartySubCommand> clazz, PartySubCommandHandler handler) {
@@ -99,17 +104,28 @@ public class PartyCommand extends Command {
     }
 
 
-    private void showHelpMessage(CommandSender sender) {
+    private void showHelpMessage(ProxiedPlayer player) {
         TextComponent topMSG = new TextComponent("Party Commands:");
         topMSG.setColor(ChatColor.LIGHT_PURPLE);
         topMSG.setBold(true);
-        sender.sendMessage(topMSG);
+        player.sendMessage(topMSG);
         TextComponent prepareMSG = new TextComponent("Click to prepare this command.");
         prepareMSG.setColor(ChatColor.YELLOW);
         prepareMSG.setItalic(true);
         TextComponent pt1 = new TextComponent("" + '\u25CF' + " ");
-        pt1.setColor(ChatColor.DARK_AQUA);
         for (Class<? extends AnnotatedPartySubCommand> clazz : subCommandClasses.values()) {
+
+            //Bullet Colors tell if the player can run the command or not. Just for a quick glance.
+            ChatColor bulletColor;
+            if (getSubCommandClassAnnotation(clazz).subCommand().equalsIgnoreCase("invite")) {
+                bulletColor = !PartyManager.getInstance().hasParty(player) || PartyRole.getRoleOf(player) == PartyRole.LEADER ? ChatColor.DARK_GREEN : ChatColor.DARK_RED;
+            } else if (getSubCommandClassAnnotation(clazz).mustBeInParty()) {
+                bulletColor = PartyManager.getInstance().hasParty(player) ? ChatColor.DARK_GREEN : ChatColor.DARK_RED;
+            } else {
+                bulletColor = (getSubCommandClassAnnotation(clazz).leaderExclusive() && PartyRole.getRoleOf(player) == PartyRole.LEADER) ? ChatColor.DARK_GREEN : ChatColor.DARK_RED;
+            }
+            pt1.setColor(bulletColor);
+
             TextComponent pt2 = new TextComponent(getSubCommandClassAnnotation(clazz).syntax());
             pt2.setColor(ChatColor.AQUA);
             pt2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{prepareMSG}));
@@ -118,9 +134,9 @@ public class PartyCommand extends Command {
             pt3.setColor(ChatColor.DARK_GRAY);
             TextComponent pt4 = new TextComponent(getSubCommandClassAnnotation(clazz).description());
             pt4.setColor(ChatColor.GRAY);
-            sender.sendMessage(pt1, pt2, pt3, pt4);
+            player.sendMessage(pt1, pt2, pt3, pt4);
         }
-        sender.sendMessage(new TextComponent(" "));
+        player.sendMessage(new TextComponent(" "));
 
     }
 
