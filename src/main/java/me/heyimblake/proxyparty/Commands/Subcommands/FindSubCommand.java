@@ -5,6 +5,7 @@ import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
 import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
+import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -39,7 +40,7 @@ public class FindSubCommand extends AnnotatedPartySubCommand {
             player.sendMessage(Constants.TAG, msg);
             return;
         }
-        if (PartyManager.getInstance().getPartyOf(target) != PartyManager.getInstance().getPartyOf(player)) {
+        if (PartyManager.getInstance().getPartyOf(target).getLeader().getUniqueId() != PartyManager.getInstance().getPartyOf(player).getLeader().getUniqueId()) {
             TextComponent msg = new TextComponent("That player isn't a member of your party!");
             msg.setColor(ChatColor.RED);
             player.sendMessage(Constants.TAG, msg);
@@ -49,6 +50,8 @@ public class FindSubCommand extends AnnotatedPartySubCommand {
         TextComponent msg = new TextComponent(target.getName() + " is playing on " + serverInfo.getName() + ".");
         msg.setColor(ChatColor.AQUA);
         player.sendMessage(Constants.TAG, msg);
+
+        new ActionLogEntry("find", player.getUniqueId(), new String[]{target.getName()}).log();
     }
 
     @Override

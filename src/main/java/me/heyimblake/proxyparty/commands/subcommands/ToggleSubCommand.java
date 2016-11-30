@@ -4,6 +4,7 @@ import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
 import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
 import me.heyimblake.proxyparty.partyutils.PartySetting;
+import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
@@ -45,6 +46,7 @@ public class ToggleSubCommand extends AnnotatedPartySubCommand {
         TextComponent msg2 = new TextComponent(partySetting.isEnabledFor(player) ? " enabled." : " disabled.");
         msg2.setColor(ChatColor.AQUA);
         player.sendMessage(Constants.TAG, msg, msg2);
+        new ActionLogEntry("toggle", player.getUniqueId(), new String[]{settingString}).log();
     }
 
     @Override

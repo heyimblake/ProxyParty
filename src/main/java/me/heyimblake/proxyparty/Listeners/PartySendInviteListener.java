@@ -1,7 +1,7 @@
 package me.heyimblake.proxyparty.listeners;
 
-import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.events.PartySendInviteEvent;
+import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -10,8 +10,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-
-import java.util.logging.Level;
 
 /**
  * Created by heyimblake on 10/23/2016.
@@ -25,7 +23,7 @@ public class PartySendInviteListener implements Listener {
         ProxiedPlayer player = event.getInvited();
         ProxiedPlayer inviter = event.getInviter();
 
-        ProxyParty.getInstance().getLogger().log(Level.INFO, player.getName() + " was invited to " + inviter.getName() + "'s party.");
+        new ActionLogEntry("invite", inviter.getUniqueId(), new String[]{player.getName()}).log();
 
         TextComponent pt1 = new TextComponent("You received a Party Invite!");
         pt1.setColor(ChatColor.LIGHT_PURPLE);

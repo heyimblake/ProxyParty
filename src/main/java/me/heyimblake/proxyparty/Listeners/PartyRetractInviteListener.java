@@ -2,6 +2,7 @@ package me.heyimblake.proxyparty.listeners;
 
 import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.events.PartyRetractInviteEvent;
+import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -26,5 +27,6 @@ public class PartyRetractInviteListener implements Listener {
         msg.setColor(ChatColor.AQUA);
         retracted.sendMessage(Constants.TAG, msg);
         ProxyParty.getInstance().getLogger().log(Level.INFO, "Party Leader " + retractor.getName() + " retracted their invite from " + retracted.getName());
+        new ActionLogEntry("retract", retractor.getUniqueId(), new String[]{retracted.getName()}).log();
     }
 }

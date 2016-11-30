@@ -6,6 +6,7 @@ import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.partyutils.PartySetting;
+import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -50,7 +51,7 @@ public class ChatSubCommand extends AnnotatedPartySubCommand {
         final String[] message = {""};
         Arrays.stream(getHandler().getArguments()).forEach(string -> message[0] += string + " ");
         PartyManager.getInstance().getPartyOf(player).sendMessage(player, message[0]);
-        ProxyParty.getInstance().getLogger().log(Level.INFO, PartyManager.getInstance().getPartyOf(player).getLeader() + "'s PARTY CHAT: " + player.getName() + ": " + message[0]);
+        new ActionLogEntry("chat", player.getUniqueId(), new String[]{message[0]}).log();
     }
 
     @Override

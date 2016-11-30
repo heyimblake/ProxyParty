@@ -3,6 +3,7 @@ package me.heyimblake.proxyparty.listeners;
 import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.events.PartyPlayerQuitEvent;
 import me.heyimblake.proxyparty.partyutils.Party;
+import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -28,5 +29,6 @@ public class PartyPlayerQuitListener implements Listener {
         party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, ex, new TextComponent(quitter.getName())));
         party.getLeader().sendMessage(Constants.TAG, ex, new TextComponent(quitter.getName()));
         ProxyParty.getInstance().getLogger().log(Level.INFO, quitter.getName() + " left " + party.getLeader() + "'s party.");
+        new ActionLogEntry("leave", quitter.getUniqueId()).log();
     }
 }

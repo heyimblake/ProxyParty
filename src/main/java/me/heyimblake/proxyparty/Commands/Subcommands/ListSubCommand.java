@@ -5,6 +5,7 @@ import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
+import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -47,6 +48,8 @@ public class ListSubCommand extends AnnotatedPartySubCommand {
         player.sendMessage(Constants.TAG, line1);
         player.sendMessage(Constants.TAG, line2);
         player.sendMessage(Constants.TAG, new TextComponent(allParticipants));
+
+        new ActionLogEntry("list", player.getUniqueId()).log();
     }
 
     @Override
