@@ -26,7 +26,6 @@ public class PartyRetractInviteListener implements Listener {
         TextComponent msg = new TextComponent(retractor.getName() + " has retracted your invitation to their party.");
         msg.setColor(ChatColor.AQUA);
         retracted.sendMessage(Constants.TAG, msg);
-        ProxyParty.getInstance().getLogger().log(Level.INFO, "Party Leader " + retractor.getName() + " retracted their invite from " + retracted.getName());
         new ActionLogEntry("retract", retractor.getUniqueId(), new String[]{retracted.getName()}).log();
     }
 }
