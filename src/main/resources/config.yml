@@ -1,0 +1,17 @@
+# ProxyParty - A party plugin for Bungeecord proxy servers.
+# Developed by heyimblake. (Keybase: https://keybase.io/heyimblakee)
+# Source: https://github.com/heyimblake/ProxyParty
+
+# How many max players can a party hold? This does NOT include the party leader.
+# Set to -1 if you want no limit (warning: your servers may not have enough slots for a large party,
+# so some members may be left out).
+# Default: -1
+maxPartySize: '-1'
+
+# What prefix do you want the plugin to use in messages?
+# Formatting/Color codes available to use. See http://minecraft.gamepedia.com/Formatting_codes
+# Use "&<CODE>" to use formatting codes. Example: "&6" for Gold and "&6&l" for Bold Gold.
+# Default: &d&lParty
+prefix: '&d&lParty'
+
+# After making your changes, please fully restart your proxy server.

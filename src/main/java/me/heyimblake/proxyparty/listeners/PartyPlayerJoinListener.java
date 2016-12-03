@@ -25,6 +25,12 @@ public class PartyPlayerJoinListener implements Listener {
         plus.setColor(ChatColor.GREEN);
         party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, plus, new TextComponent(joined.getName())));
         party.getLeader().sendMessage(Constants.TAG, plus, new TextComponent(joined.getName()));
+        if (party.getParticipants().size() >= Constants.MAX_PARTY_SIZE) {
+            TextComponent msg = new TextComponent("Your party has now reached the maximum size of " + Constants.MAX_PARTY_SIZE + ".");
+            msg.setColor(ChatColor.RED);
+            msg.setBold(true);
+            party.getLeader().sendMessage(Constants.TAG, msg);
+        }
         new ActionLogEntry("accept", joined.getUniqueId(), new String[]{party.getLeader().getName()}).log();
     }
 }

@@ -53,6 +53,15 @@ public class AcceptSubCommand extends AnnotatedPartySubCommand {
             return;
         }
         if (PartyManager.getInstance().getPartyOf(target).getInvited().contains(player)) {
+
+            if (Constants.MAX_PARTY_SIZE <= PartyManager.getInstance().getPartyOf(target).getParticipants().size()) {
+                TextComponent errmsg = new TextComponent("Sorry, but that party is full. Perhaps the leader could make some room for you.");
+                errmsg.setColor(ChatColor.RED);
+                errmsg.setBold(true);
+                player.sendMessage(Constants.TAG, errmsg);
+                return;
+            }
+
             TextComponent msg = new TextComponent("You've joined " + target.getName() + "'s Party!");
             msg.setColor(ChatColor.AQUA);
             Party party = PartyManager.getInstance().getPartyOf(target);

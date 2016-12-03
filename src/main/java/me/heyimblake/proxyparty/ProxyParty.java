@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import me.heyimblake.proxyparty.commands.PartyCommand;
 import me.heyimblake.proxyparty.listeners.*;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
+import me.heyimblake.proxyparty.utils.ConfigManager;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.*;
@@ -24,6 +25,7 @@ public final class ProxyParty extends Plugin {
     private boolean loggingEnabled = true;
     private String logFileName = "log.json";
     private File logFile;
+    private ConfigManager configManager;
 
     public static ProxyParty getInstance() {
         return instance;
@@ -35,6 +37,8 @@ public final class ProxyParty extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new PartyCommand());
         registerListeners();
         setupLogFile();
+        configManager = new ConfigManager();
+        configManager.initialize();
     }
 
     @Override
@@ -106,5 +110,9 @@ public final class ProxyParty extends Plugin {
 
     public String getLogFileName() {
         return logFileName;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 }

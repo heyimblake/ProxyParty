@@ -6,7 +6,7 @@
 
     <groupId>me.heyimblake</groupId>
     <artifactId>ProxyParty</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <url>https://heyimblake.me</url>
     <packaging>jar</packaging>
     <name>ProxyParty</name>

@@ -1,7 +1,5 @@
 package me.heyimblake.proxyparty.utils;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 /**
@@ -11,5 +9,6 @@ import net.md_5.bungee.api.chat.TextComponent;
  *         https://heyimblake.me
  */
 public class Constants {
-    public static final BaseComponent TAG = new TextComponent(ChatColor.DARK_GRAY + "" + '\u2502' + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + " Party" + ChatColor.DARK_GRAY + '\u2502' + ChatColor.GRAY + " ");
+    public static TextComponent TAG;
+    public static int MAX_PARTY_SIZE;
 }
