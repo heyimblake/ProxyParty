@@ -87,9 +87,9 @@ public final class ProxyParty extends Plugin {
         getLogger().log(Level.INFO, "Detected " + logFileName + ".");
         try {
             Gson gson = new Gson();
-            List<ActionLogEntry> entires = new ArrayList<>();
+            List<ActionLogEntry> entires;
             Type type = new TypeToken<List<ActionLogEntry>>(){}.getType();
-            entires = gson.fromJson(new FileReader(logFileName), type);
+            entires = gson.fromJson(new FileReader(logFile), type);
             entires.forEach(actionLogEntry -> ActionLogEntry.savedEntries.add(actionLogEntry));
             getLogger().log(Level.INFO, "Imported old actions from " + logFileName + ".");
         } catch (FileNotFoundException e) {
