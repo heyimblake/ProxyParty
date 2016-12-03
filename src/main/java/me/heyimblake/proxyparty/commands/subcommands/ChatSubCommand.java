@@ -1,6 +1,5 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
-import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
 import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
@@ -13,7 +12,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Arrays;
-import java.util.logging.Level;
 
 /**
  * Created by heyimblake on 10/21/2016.

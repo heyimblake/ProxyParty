@@ -2,7 +2,6 @@ package me.heyimblake.proxyparty.partyutils;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +22,20 @@ public enum PartySetting {
         this.argumentString = argumentString;
         this.niceName = niceName;
         this.players = players;
+    }
+
+    /**
+     * Gets a PartySetting that matches an argumentString.
+     *
+     * @param argumentString the argument string
+     * @return the matching partysetting, or null if invalid
+     */
+    public static PartySetting getPartySetting(String argumentString) {
+        for (PartySetting setting : PartySetting.values()) {
+            if (setting.getArgumentString().equalsIgnoreCase(argumentString))
+                return setting;
+        }
+        return null;
     }
 
     /**
@@ -90,19 +103,5 @@ public enum PartySetting {
      */
     public String getNiceName() {
         return niceName;
-    }
-
-    /**
-     * Gets a PartySetting that matches an argumentString.
-     *
-     * @param argumentString the argument string
-     * @return the matching partysetting, or null if invalid
-     */
-    public static PartySetting getPartySetting(String argumentString) {
-        for (PartySetting setting : PartySetting.values()) {
-            if (setting.getArgumentString().equalsIgnoreCase(argumentString))
-                return setting;
-        }
-        return null;
     }
 }

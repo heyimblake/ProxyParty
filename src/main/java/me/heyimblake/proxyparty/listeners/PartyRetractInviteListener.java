@@ -1,6 +1,5 @@
 package me.heyimblake.proxyparty.listeners;
 
-import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.events.PartyRetractInviteEvent;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
@@ -9,8 +8,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-
-import java.util.logging.Level;
 
 /**
  * Created by heyimblake on 10/26/2016.

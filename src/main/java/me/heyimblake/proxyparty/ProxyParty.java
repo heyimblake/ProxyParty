@@ -10,7 +10,6 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -22,14 +21,13 @@ import java.util.logging.Level;
  */
 public final class ProxyParty extends Plugin {
     private static ProxyParty instance;
+    private boolean loggingEnabled = true;
+    private String logFileName = "log.json";
+    private File logFile;
 
     public static ProxyParty getInstance() {
         return instance;
     }
-
-    private boolean loggingEnabled = true;
-    private String logFileName = "log.json";
-    private File logFile;
 
     @Override
     public void onEnable() {
@@ -88,12 +86,13 @@ public final class ProxyParty extends Plugin {
         try {
             Gson gson = new Gson();
             List<ActionLogEntry> entires;
-            Type type = new TypeToken<List<ActionLogEntry>>(){}.getType();
+            Type type = new TypeToken<List<ActionLogEntry>>() {
+            }.getType();
             entires = gson.fromJson(new FileReader(logFile), type);
             entires.forEach(actionLogEntry -> ActionLogEntry.savedEntries.add(actionLogEntry));
             getLogger().log(Level.INFO, "Imported old actions from " + logFileName + ".");
         } catch (FileNotFoundException e) {
-           //Not really possible as it's created/verified above, but oh well, here's a catch block!
+            //Not really possible as it's created/verified above, but oh well, here's a catch block!
         }
     }
 

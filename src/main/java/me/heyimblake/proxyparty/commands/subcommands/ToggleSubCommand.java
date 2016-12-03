@@ -7,7 +7,7 @@ import me.heyimblake.proxyparty.partyutils.PartySetting;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**

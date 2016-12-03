@@ -1,6 +1,5 @@
 package me.heyimblake.proxyparty.utils;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.heyimblake.proxyparty.ProxyParty;
 
@@ -51,7 +50,7 @@ public class ActionLogEntry {
     }
 
     private String toJson() {
-       return new GsonBuilder().setPrettyPrinting().create().toJson(this);
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this);
     }
 
     public void log() {
