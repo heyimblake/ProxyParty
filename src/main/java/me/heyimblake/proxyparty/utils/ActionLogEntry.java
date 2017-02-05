@@ -49,6 +49,10 @@ public class ActionLogEntry {
         return senderUUID;
     }
 
+    public long getTimeMillis() {
+        return timeMillis;
+    }
+
     private String toJson() {
         return new GsonBuilder().setPrettyPrinting().create().toJson(this);
     }

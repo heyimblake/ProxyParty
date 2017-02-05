@@ -1,5 +1,6 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
+import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
 import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
@@ -35,19 +36,30 @@ public class ListSubCommand extends AnnotatedPartySubCommand {
         Party party = PartyManager.getInstance().getPartyOf(player);
         TextComponent line1 = new TextComponent("Party Leader: ");
         line1.setColor(ChatColor.YELLOW);
+        line1.setBold(true);
         line1.addExtra(new TextComponent(party.getLeader().getName()));
 
-        TextComponent line2 = new TextComponent("Participants: ");
-        line2.setColor(ChatColor.AQUA);
-
-        String allParticipants = "";
-        for (ProxiedPlayer participant : party.getParticipants()) {
-            allParticipants = allParticipants + participant.getName() + ", ";
+        if (party.getParticipants().size() != 0) {
+            TextComponent line2 = new TextComponent("Participants: ");
+            line2.setColor(ChatColor.AQUA);
+            if (Constants.MAX_PARTY_SIZE != -1) {
+                TextComponent count = new TextComponent(" (" + party.getParticipants().size() + "/" + Constants.MAX_PARTY_SIZE + ")");
+                count.setColor(ChatColor.DARK_AQUA);
+                line2.addExtra(count);
+            }
+            String allParticipants = "";
+            for (ProxiedPlayer participant : party.getParticipants()) {
+                allParticipants = allParticipants + participant.getName() + ", ";
+            }
+            player.sendMessage(Constants.TAG, line1);
+            player.sendMessage(Constants.TAG, line2);
+            player.sendMessage(Constants.TAG, new TextComponent(allParticipants));
+        } else {
+            TextComponent line2 = new TextComponent("There are no participants in this party.");
+            line2.setColor(ChatColor.RED);
+            player.sendMessage(Constants.TAG, line1);
+            player.sendMessage(Constants.TAG, line2);
         }
-
-        player.sendMessage(Constants.TAG, line1);
-        player.sendMessage(Constants.TAG, line2);
-        player.sendMessage(Constants.TAG, new TextComponent(allParticipants));
 
         new ActionLogEntry("list", player.getUniqueId()).log();
     }
