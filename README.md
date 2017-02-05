@@ -1,9 +1,8 @@
 # ProxyParty 
-[![Build Status](https://drone.io/github.com/heyimblake/ProxyParty/status.png)](https://drone.io/github.com/heyimblake/ProxyParty/latest)
+[![Build Status](https://api.travis-ci.org/heyimblake/ProxyParty.svg?branch=master)](https://travis-ci.org/heyimblake/ProxyParty)
 
 A party plugin for [Bungeecord](https://github.com/SpigotMC/BungeeCord) proxy servers.
 
-Latest Download (.jar): https://drone.io/github.com/heyimblake/ProxyParty/files/target/ProxyParty.jar
 
 ## Getting Started
 
