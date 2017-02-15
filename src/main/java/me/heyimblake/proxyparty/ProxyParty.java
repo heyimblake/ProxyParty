@@ -83,6 +83,7 @@ public final class ProxyParty extends Plugin {
                 getLogger().log(Level.WARNING, "Could not create " + logFileName + ". Disabling Logging for now!");
                 loggingEnabled = false;
             }
+            return;
         }
         if (!loggingEnabled)
             return;
