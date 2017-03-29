@@ -7,6 +7,7 @@ import me.heyimblake.proxyparty.partyutils.PartySetting;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -47,9 +48,7 @@ public class ToggleSubCommand extends AnnotatedPartySubCommand {
         String settingString = getHandler().getArguments()[0];
         PartySetting partySetting = PartySetting.getPartySetting(settingString);
         if (partySetting == null) {
-            TextComponent msg = new TextComponent("Sorry, that setting couldn't be found. Here's a list of valid settings: ");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("Sorry, that setting couldn't be found. Here's a list of valid settings: ").color(ChatColor.RED).create()[0]);
             sendAllSettings(player);
             return;
         }

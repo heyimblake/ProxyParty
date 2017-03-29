@@ -8,7 +8,7 @@ import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.partyutils.PartyRole;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -47,15 +47,11 @@ public class LeaveSubCommand extends AnnotatedPartySubCommand {
         ProxiedPlayer player = (ProxiedPlayer) getHandler().getCommandSender();
         Party party = PartyManager.getInstance().getPartyOf(player);
         if (PartyRole.getRoleOf(player) == PartyRole.LEADER) {
-            TextComponent msg = new TextComponent("You're the leader! Either promote another member to be leader and leave or disband the party.");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("You're the leader! Either promote another member to be leader and leave or disband the party.").color(ChatColor.RED).create()[0]);
             return;
         }
         party.removeParticipant(player);
-        TextComponent msg = new TextComponent("You left the party.");
-        msg.setColor(ChatColor.YELLOW);
-        player.sendMessage(Constants.TAG, msg);
+        player.sendMessage(Constants.TAG, new ComponentBuilder("You left the party.").color(ChatColor.YELLOW).create()[0]);
     }
 
     @Override

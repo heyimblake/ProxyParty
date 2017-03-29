@@ -6,8 +6,10 @@ import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
+import me.heyimblake.proxyparty.utils.CommandConditions;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -46,23 +48,16 @@ public class RetractSubCommand extends AnnotatedPartySubCommand {
     public void runProxiedPlayer() {
         ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
         ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
-        if (target == null) {
-            TextComponent msg = new TextComponent("The specified player could not be found.");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+        if (!CommandConditions.checkTargetOnline(target, player))
             return;
-        }
+
         Party party = PartyManager.getInstance().getPartyOf(player);
         if (!party.getInvited().contains(target)) {
-            TextComponent msg = new TextComponent(target.getName() + " is not invited to your party.");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("%s is not invited to your party.", target.getName())).color(ChatColor.RED).create()[0]);
             return;
         }
         party.retractInvite(target);
-        TextComponent msg = new TextComponent("You retracted the invite of " + target.getName());
-        msg.setColor(ChatColor.AQUA);
-        player.sendMessage(Constants.TAG, msg);
+        player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("You've retracted the invite of %s.", target.getName())).color(ChatColor.AQUA).create()[0]);
     }
 
     @Override

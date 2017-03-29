@@ -4,7 +4,7 @@ import me.heyimblake.proxyparty.events.PartyKickEvent;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -32,10 +32,7 @@ public class PartyKickListener implements Listener {
     @EventHandler
     public void onPartyKick(PartyKickEvent event) {
         ProxiedPlayer player = event.getKickedPlayer();
-        TextComponent msg = new TextComponent("You were removed from the party.");
-        msg.setBold(true);
-        msg.setColor(ChatColor.RED);
-        player.sendMessage(Constants.TAG, msg);
+        player.sendMessage(Constants.TAG, new ComponentBuilder("You were removed from the party").color(ChatColor.RED).bold(true).create()[0]);
         new ActionLogEntry("kick", event.getParty().getLeader().getUniqueId(), new String[]{player.getName()}).log();
     }
 }

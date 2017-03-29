@@ -7,10 +7,7 @@ import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -60,18 +57,12 @@ public class InvitedSubCommand extends AnnotatedPartySubCommand {
                 textComponent.setColor(ChatColor.DARK_AQUA);
                 names.add(textComponent);
             }
-            TextComponent msg = new TextComponent("These players have invitations to your party:");
-            msg.setColor(ChatColor.AQUA);
-            TextComponent retractMSG = new TextComponent("Click on a name above to retract their invitation.");
-            retractMSG.setColor(ChatColor.GRAY);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("These players have invitations to your party:").color(ChatColor.AQUA).create()[0]);
             names.forEach(name -> player.sendMessage(Constants.TAG, name));
-            player.sendMessage(Constants.TAG, retractMSG);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("Click on a name above to retract their invitation.").color(ChatColor.GRAY).create()[0]);
             return;
         }
-        TextComponent msg = new TextComponent("You do not have any outgoing invitations.");
-        msg.setColor(ChatColor.RED);
-        player.sendMessage(Constants.TAG, msg);
+        player.sendMessage(Constants.TAG, new ComponentBuilder("You do not have any outgoing invitations.").color(ChatColor.RED).create()[0]);
     }
 
     @Override

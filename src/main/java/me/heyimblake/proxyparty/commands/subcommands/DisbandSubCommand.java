@@ -7,6 +7,7 @@ import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -45,16 +46,12 @@ public class DisbandSubCommand extends AnnotatedPartySubCommand {
     public void runProxiedPlayer() {
         ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
         if (!PartyManager.getInstance().hasParty(player)) {
-            TextComponent msg = new TextComponent("You aren't in a party!");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("You aren't in a party!").color(ChatColor.RED).create()[0]);
             return;
         }
         Party party = PartyManager.getInstance().getPartyOf(player);
         party.disband();
-        TextComponent msg = new TextComponent("You disbanded the party.");
-        msg.setColor(ChatColor.YELLOW);
-        player.sendMessage(Constants.TAG, msg);
+        player.sendMessage(Constants.TAG, new ComponentBuilder("You disbanded the party.").color(ChatColor.YELLOW).create()[0]);
     }
 
     @Override

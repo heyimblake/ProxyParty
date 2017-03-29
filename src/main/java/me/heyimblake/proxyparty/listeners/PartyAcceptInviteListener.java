@@ -5,7 +5,7 @@ import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -34,9 +34,7 @@ public class PartyAcceptInviteListener implements Listener {
     public void onPartyAcceptInvite(PartyAcceptInviteEvent event) {
         Party party = event.getParty();
         ProxiedPlayer accepter = event.getAccepter();
-        TextComponent msg = new TextComponent("Player " + accepter.getName() + " has accepted your party invitation.");
-        msg.setColor(ChatColor.AQUA);
-        party.getLeader().sendMessage(Constants.TAG, msg);
+        party.getLeader().sendMessage(Constants.TAG, new ComponentBuilder(String.format("Player %s has accepted your party invitation.", accepter.getName())).color(ChatColor.AQUA).create()[0]);
         new ActionLogEntry("accept", accepter.getUniqueId(), new String[]{party.getLeader().getName()}).log();
     }
 }

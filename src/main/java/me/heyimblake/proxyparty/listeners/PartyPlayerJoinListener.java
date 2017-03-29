@@ -5,7 +5,8 @@ import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -34,16 +35,15 @@ public class PartyPlayerJoinListener implements Listener {
     public void onPartyPlayerJoin(PartyPlayerJoinEvent event) {
         Party party = event.getParty();
         ProxiedPlayer joined = event.getWhoJoined();
-        TextComponent plus = new TextComponent("" + '\u271A' + " ");
-        plus.setColor(ChatColor.GREEN);
-        party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, plus, new TextComponent(joined.getName())));
-        party.getLeader().sendMessage(Constants.TAG, plus, new TextComponent(joined.getName()));
-        if (party.getParticipants().size() >= Constants.MAX_PARTY_SIZE) {
-            TextComponent msg = new TextComponent("Your party has now reached the maximum size of " + Constants.MAX_PARTY_SIZE + ".");
-            msg.setColor(ChatColor.RED);
-            msg.setBold(true);
-            party.getLeader().sendMessage(Constants.TAG, msg);
+        BaseComponent[] messages = new ComponentBuilder(Character.toString('\u271A').concat(" ")).color(ChatColor.GREEN).append(joined.getName(), ComponentBuilder.FormatRetention.NONE).color(ChatColor.WHITE).create();
+
+        party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, messages[0], messages[1]));
+        party.getLeader().sendMessage(Constants.TAG, messages[0], messages[1]);
+
+        if (party.getParticipants().size() >= Constants.MAX_PARTY_SIZE && Constants.MAX_PARTY_SIZE != -1) {
+            party.getLeader().sendMessage(Constants.TAG, new ComponentBuilder(String.format("Your party has now reached the maximum size of %s.", Integer.toString(Constants.MAX_PARTY_SIZE))).color(ChatColor.RED).create()[0]);
         }
+
         new ActionLogEntry("accept", joined.getUniqueId(), new String[]{party.getLeader().getName()}).log();
     }
 }

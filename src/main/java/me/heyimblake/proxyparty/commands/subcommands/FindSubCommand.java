@@ -6,8 +6,10 @@ import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
+import me.heyimblake.proxyparty.utils.CommandConditions;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -47,22 +49,15 @@ public class FindSubCommand extends AnnotatedPartySubCommand {
     public void runProxiedPlayer() {
         ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
         ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
-        if (target == null) {
-            TextComponent msg = new TextComponent("The specified player could not be found.");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+        if (!CommandConditions.checkTargetOnline(target, player))
             return;
-        }
+
         if (PartyManager.getInstance().getPartyOf(target).getLeader().getUniqueId() != PartyManager.getInstance().getPartyOf(player).getLeader().getUniqueId()) {
-            TextComponent msg = new TextComponent("That player isn't a member of your party!");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("That player isn't a member of your party!").color(ChatColor.RED).create()[0]);
             return;
         }
         ServerInfo serverInfo = target.getServer().getInfo();
-        TextComponent msg = new TextComponent(target.getName() + " is playing on " + serverInfo.getName() + ".");
-        msg.setColor(ChatColor.AQUA);
-        player.sendMessage(Constants.TAG, msg);
+        player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("%s is playing on $s.", target.getName(), serverInfo.getName())).color(ChatColor.AQUA).create()[0]);
 
         new ActionLogEntry("find", player.getUniqueId(), new String[]{target.getName()}).log();
     }

@@ -1,17 +1,15 @@
 package me.heyimblake.proxyparty.listeners;
 
-import me.heyimblake.proxyparty.ProxyParty;
 import me.heyimblake.proxyparty.events.PartyPlayerQuitEvent;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-
-import java.util.logging.Level;
 
 /**
  * Copyright (C) 2017 heyimblake
@@ -37,11 +35,11 @@ public class PartyPlayerQuitListener implements Listener {
     public void onPartyPlayerQuit(PartyPlayerQuitEvent event) {
         Party party = event.getParty();
         ProxiedPlayer quitter = event.getWhoQuit();
-        TextComponent ex = new TextComponent("" + '\u2716' + " ");
-        ex.setColor(ChatColor.RED);
-        party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, ex, new TextComponent(quitter.getName())));
-        party.getLeader().sendMessage(Constants.TAG, ex, new TextComponent(quitter.getName()));
-        ProxyParty.getInstance().getLogger().log(Level.INFO, quitter.getName() + " left " + party.getLeader() + "'s party.");
+        BaseComponent[] messages = new ComponentBuilder(Character.toString('\u2716').concat(" ")).color(ChatColor.RED).append(quitter.getName(), ComponentBuilder.FormatRetention.NONE).color(ChatColor.GRAY).create();
+
+        party.getParticipants().forEach(participant -> participant.sendMessage(Constants.TAG, messages[0], messages[1]));
+        party.getLeader().sendMessage(Constants.TAG, messages[0], messages[1]);
+
         new ActionLogEntry("leave", quitter.getUniqueId()).log();
     }
 }

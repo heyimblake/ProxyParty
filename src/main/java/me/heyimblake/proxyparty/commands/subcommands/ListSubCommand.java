@@ -8,6 +8,7 @@ import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -67,10 +68,8 @@ public class ListSubCommand extends AnnotatedPartySubCommand {
             player.sendMessage(Constants.TAG, line2);
             player.sendMessage(Constants.TAG, new TextComponent(allParticipants));
         } else {
-            TextComponent line2 = new TextComponent("There are no participants in this party.");
-            line2.setColor(ChatColor.RED);
             player.sendMessage(Constants.TAG, line1);
-            player.sendMessage(Constants.TAG, line2);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("There are no participants in this party.").color(ChatColor.RED).create()[0]);
         }
 
         new ActionLogEntry("list", player.getUniqueId()).log();

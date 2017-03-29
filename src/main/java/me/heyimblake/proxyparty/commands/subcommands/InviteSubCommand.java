@@ -10,7 +10,7 @@ import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.partyutils.PartySetting;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -50,35 +50,25 @@ public class InviteSubCommand extends AnnotatedPartySubCommand {
         String targetName = getHandler().getArguments()[0];
         ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(targetName);
         if (target == null || (target != null && target.getUniqueId() == player.getUniqueId())) {
-            TextComponent msg = new TextComponent("Cannot find or invite that player to your party! :(");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("Cannot find or invite that player to your party! :(").color(ChatColor.RED).create()[0]);
             return;
         }
         Party targetParty = PartyManager.getInstance().getPartyOf(target);
         if (targetParty != null) {
-            TextComponent msg = new TextComponent("This player is already a member of a party. Ask them to leave their party and try this command again.");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("This player is already a member of a party. Ask them to leave their party and try this command again.").color(ChatColor.RED).create()[0]);
             return;
         }
         Party party = !PartyManager.getInstance().hasParty(player) ? new PartyCreator().setLeader(player).create() : PartyManager.getInstance().getPartyOf(player);
         if (party.getInvited().contains(target)) {
-            TextComponent msg = new TextComponent("This player is already invited to your party!");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("This player is already invited to your party!").color(ChatColor.RED).create()[0]);
             return;
         }
         if (PartySetting.PARTY_INVITE_RECIEVE_TOGGLE_OFF.getPlayers().contains(target)) {
-            TextComponent msg = new TextComponent("This player is currently not accepting party invitations.");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("This player is currently not accepting party invitations.").color(ChatColor.RED).create()[0]);
             return;
         }
         party.invitePlayer(target);
-        TextComponent msg = new TextComponent("Invited player " + targetName + "!");
-        msg.setColor(ChatColor.AQUA);
-        player.sendMessage(Constants.TAG, msg);
+        player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("Invited player %s!", targetName)).color(ChatColor.AQUA).create()[0]);
     }
 
     @Override

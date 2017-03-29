@@ -6,9 +6,10 @@ import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
 import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
+import me.heyimblake.proxyparty.utils.CommandConditions;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -47,23 +48,16 @@ public class PromoteSubCommand extends AnnotatedPartySubCommand {
         ProxiedPlayer player = (ProxiedPlayer) getHandler().getCommandSender();
         Party party = PartyManager.getInstance().getPartyOf(player);
         ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
-        if (target == null) {
-            TextComponent msg = new TextComponent("The specified player could not be found.");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+        if (!CommandConditions.checkTargetOnline(target, player))
             return;
-        }
+
         Party targetParty = PartyManager.getInstance().getPartyOf(target);
         if (targetParty == null || targetParty != party) {
-            TextComponent msg = new TextComponent("That player isn't in your party!");
-            msg.setColor(ChatColor.RED);
-            player.sendMessage(Constants.TAG, msg);
+            player.sendMessage(Constants.TAG, new ComponentBuilder("That player isn't in your party!").color(ChatColor.RED).create()[0]);
             return;
         }
         party.setLeader(target);
-        TextComponent msg = new TextComponent("You've promoted " + target.getName() + " to Party Leader!");
-        msg.setColor(ChatColor.YELLOW);
-        player.sendMessage(Constants.TAG, msg);
+        player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("You've promoted %s to Party Leader!", target.getName())).color(ChatColor.YELLOW).create()[0]);
     }
 
     @Override

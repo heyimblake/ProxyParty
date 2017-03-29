@@ -28,7 +28,7 @@ public enum PartyRole {
     LEADER,
     PARTICIPANT;
 
-    private static Map<ProxiedPlayer, me.heyimblake.proxyparty.partyutils.PartyRole> playerPartyRoleMap = new HashMap<>();
+    private static Map<ProxiedPlayer, PartyRole> playerPartyRoleMap = new HashMap<>();
 
     /**
      * Gets the partyrole of a supplied player.
@@ -36,7 +36,7 @@ public enum PartyRole {
      * @param player the player to retrieve the role of
      * @return the role of the supplied player, null if they have no role
      */
-    public static me.heyimblake.proxyparty.partyutils.PartyRole getRoleOf(ProxiedPlayer player) {
+    public static PartyRole getRoleOf(ProxiedPlayer player) {
         return playerPartyRoleMap.getOrDefault(player, null);
     }
 
@@ -55,7 +55,7 @@ public enum PartyRole {
      * @param player the player to be set
      * @param role   the partyrole to set the player to
      */
-    public static void setRoleOf(ProxiedPlayer player, me.heyimblake.proxyparty.partyutils.PartyRole role) {
+    public static void setRoleOf(ProxiedPlayer player, PartyRole role) {
         if (playerPartyRoleMap.containsKey(player))
             playerPartyRoleMap.remove(player);
         playerPartyRoleMap.put(player, role);
