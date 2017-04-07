@@ -57,7 +57,7 @@ public class FindSubCommand extends AnnotatedPartySubCommand {
             return;
         }
         ServerInfo serverInfo = target.getServer().getInfo();
-        player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("%s is playing on $s.", target.getName(), serverInfo.getName())).color(ChatColor.AQUA).create()[0]);
+        player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("%s is playing on %s.", target.getName(), serverInfo.getName())).color(ChatColor.AQUA).create()[0]);
 
         new ActionLogEntry("find", player.getUniqueId(), new String[]{target.getName()}).log();
     }
