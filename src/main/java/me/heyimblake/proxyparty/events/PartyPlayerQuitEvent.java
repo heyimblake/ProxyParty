@@ -24,8 +24,8 @@ import net.md_5.bungee.api.plugin.Event;
  * @since 10/22/2016
  */
 public class PartyPlayerQuitEvent extends Event {
-    private Party party;
-    private ProxiedPlayer player;
+    private final Party party;
+    private final ProxiedPlayer player;
 
     public PartyPlayerQuitEvent(Party party, ProxiedPlayer player) {
         this.party = party;

@@ -31,10 +31,10 @@ public class ActionLogEntry {
 
     public static List<ActionLogEntry> savedEntries = new ArrayList<>();
 
-    private String action;
-    private String[] arguments;
-    private UUID senderUUID;
-    private long timeMillis;
+    private final String action;
+    private final String[] arguments;
+    private final UUID senderUUID;
+    private final long timeMillis;
 
     public ActionLogEntry(String action, UUID senderUUID, String[] arguments) {
         this.action = action;
@@ -71,12 +71,15 @@ public class ActionLogEntry {
     }
 
     public void log() {
-        if (!ProxyParty.getInstance().isLoggingEnabled())
-            return;
+        if (!ProxyParty.getInstance().isLoggingEnabled()) return;
+
         savedEntries.add(this);
+
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(ProxyParty.getInstance().getLogFile());
+
             fileOutputStream.write(new GsonBuilder().setPrettyPrinting().create().toJson(savedEntries).getBytes());
+
             fileOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();

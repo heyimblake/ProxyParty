@@ -1,15 +1,15 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
 import me.heyimblake.proxyparty.ProxyParty;
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.events.PartyAcceptInviteEvent;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.CommandConditions;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -32,28 +32,19 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author heyimblake
  * @since 10/23/2016
  */
-@PartySubCommandExecutor(subCommand = "accept",
+@PartyAnnotationCommand(name = "accept",
         syntax = "/party accept <Player>",
         description = "Accepts a party invitation from a player.",
         requiresArgumentCompletion = true,
-        leaderExclusive = false,
         mustBeInParty = false)
-public class AcceptSubCommand extends AnnotatedPartySubCommand {
+public class AcceptSubCommand extends PartySubCommand {
 
-    public AcceptSubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+    public void execute(ProxiedPlayer player, String[] args) {
+        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
 
-    @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
-        ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
+        if (!CommandConditions.checkTargetOnline(target, player)) return;
 
-        if (!CommandConditions.checkTargetOnline(target, player))
-            return;
-
-        if (!CommandConditions.blockIfHasParty(player))
-            return;
+        if (!CommandConditions.blockIfHasParty(player)) return;
 
         if (PartyManager.getInstance().getPartyOf(target) == null || !PartyManager.getInstance().getPartyOf(target).getLeader().getUniqueId().equals(target.getUniqueId())) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("The specified player either is not in a party or is not the party leader.").color(ChatColor.RED).create()[0]);
@@ -73,11 +64,7 @@ public class AcceptSubCommand extends AnnotatedPartySubCommand {
             ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyAcceptInviteEvent(party, player));
             return;
         }
+
         player.sendMessage(Constants.TAG, new ComponentBuilder("You have no pending invites for this party.").color(ChatColor.RED).create()[0]);
-    }
-
-    @Override
-    public void runConsole() {
-
     }
 }

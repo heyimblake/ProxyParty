@@ -27,14 +27,10 @@ import java.util.Set;
  * @since 10/21/2016
  */
 public class PartyManager {
-    private static PartyManager instance = new PartyManager();
-    private Map<ProxiedPlayer, Party> playerPartyMap;
-    private Set<Party> activeParties;
 
-    private PartyManager() {
-        this.playerPartyMap = new HashMap<>();
-        this.activeParties = new HashSet<>();
-    }
+    private static final PartyManager instance = new PartyManager();
+    private final Map<ProxiedPlayer, Party> playerPartyMap = new HashMap<>();
+    private final Set<Party> activeParties = new HashSet<>();
 
     public static PartyManager getInstance() {
         return instance;

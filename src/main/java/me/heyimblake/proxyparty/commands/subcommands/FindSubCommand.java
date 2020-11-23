@@ -1,16 +1,14 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
-import me.heyimblake.proxyparty.ProxyParty;
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
 import me.heyimblake.proxyparty.utils.CommandConditions;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -33,37 +31,28 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author heyimblake
  * @since 10/21/2016
  */
-@PartySubCommandExecutor(subCommand = "find",
+@PartyAnnotationCommand(name = "find",
         syntax = "/party find <Player>",
         description = "Finds a party participant.",
-        requiresArgumentCompletion = true,
-        leaderExclusive = false,
-        mustBeInParty = true)
-public class FindSubCommand extends AnnotatedPartySubCommand {
-
-    public FindSubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+        requiresArgumentCompletion = true)
+public class FindSubCommand extends PartySubCommand {
 
     @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
-        ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
-        if (!CommandConditions.checkTargetOnline(target, player))
-            return;
+    public void execute(ProxiedPlayer player, String[] args) {
+        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+
+        if (!CommandConditions.checkTargetOnline(target, player)) return;
 
         if (PartyManager.getInstance().getPartyOf(target).getLeader().getUniqueId() != PartyManager.getInstance().getPartyOf(player).getLeader().getUniqueId()) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("That player isn't a member of your party!").color(ChatColor.RED).create()[0]);
+
             return;
         }
+
         ServerInfo serverInfo = target.getServer().getInfo();
+
         player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("%s is playing on %s.", target.getName(), serverInfo.getName())).color(ChatColor.AQUA).create()[0]);
 
         new ActionLogEntry("find", player.getUniqueId(), new String[]{target.getName()}).log();
-    }
-
-    @Override
-    public void runConsole() {
-
     }
 }

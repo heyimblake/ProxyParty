@@ -26,21 +26,25 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  */
 public class CommandConditions {
 
-    private static PartyManager partyManager = PartyManager.getInstance();
+    private static final PartyManager partyManager = PartyManager.getInstance();
 
     public static boolean checkTargetOnline(ProxiedPlayer proxiedPlayer, ProxiedPlayer sender) {
         if (proxiedPlayer == null) {
             sender.sendMessage(Constants.TAG, new ComponentBuilder("The specified player could not be found.").color(ChatColor.RED).create()[0]);
+
             return false;
         }
+
         return true;
     }
 
     public static boolean blockIfHasParty(ProxiedPlayer sender) {
         if (partyManager.hasParty(sender)) {
             sender.sendMessage(Constants.TAG, new ComponentBuilder("You are already in a party!").color(ChatColor.RED).create()[0]);
+
             return false;
         }
+
         return true;
     }
 }

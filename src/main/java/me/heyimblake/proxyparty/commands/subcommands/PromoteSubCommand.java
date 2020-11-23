@@ -1,14 +1,14 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
 import me.heyimblake.proxyparty.ProxyParty;
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.CommandConditions;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -31,37 +31,31 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author heyimblake
  * @since 10/21/2016
  */
-@PartySubCommandExecutor(subCommand = "promote",
+@PartyAnnotationCommand(name = "promote",
         syntax = "/party promote <Player>",
         description = "Promotes a participant to be the party leader.",
         requiresArgumentCompletion = true,
-        leaderExclusive = true,
-        mustBeInParty = true)
-public class PromoteSubCommand extends AnnotatedPartySubCommand {
-
-    public PromoteSubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+        leaderExclusive = true)
+public class PromoteSubCommand extends PartySubCommand {
 
     @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = (ProxiedPlayer) getHandler().getCommandSender();
+    public void execute(ProxiedPlayer player, String[] args) {
         Party party = PartyManager.getInstance().getPartyOf(player);
-        ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
-        if (!CommandConditions.checkTargetOnline(target, player))
-            return;
+
+        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+
+        if (!CommandConditions.checkTargetOnline(target, player)) return;
 
         Party targetParty = PartyManager.getInstance().getPartyOf(target);
+
         if (targetParty == null || targetParty != party) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("That player isn't in your party!").color(ChatColor.RED).create()[0]);
+
             return;
         }
+
         party.setLeader(target);
+
         player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("You've promoted %s to Party Leader!", target.getName())).color(ChatColor.YELLOW).create()[0]);
-    }
-
-    @Override
-    public void runConsole() {
-
     }
 }

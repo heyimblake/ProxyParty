@@ -56,8 +56,8 @@ public enum PartyRole {
      * @param role   the partyrole to set the player to
      */
     public static void setRoleOf(ProxiedPlayer player, PartyRole role) {
-        if (playerPartyRoleMap.containsKey(player))
-            playerPartyRoleMap.remove(player);
+        playerPartyRoleMap.remove(player);
+
         playerPartyRoleMap.put(player, role);
     }
 
@@ -77,6 +77,7 @@ public enum PartyRole {
      */
     public void addPlayer(ProxiedPlayer player) {
         removeRoleFrom(player);
+
         setRoleOf(player, this);
     }
 

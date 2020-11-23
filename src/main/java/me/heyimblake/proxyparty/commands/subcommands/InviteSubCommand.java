@@ -1,15 +1,13 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
-import me.heyimblake.proxyparty.ProxyParty;
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.partyutils.Party;
-import me.heyimblake.proxyparty.partyutils.PartyCreator;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.partyutils.PartySetting;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -32,47 +30,52 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author heyimblake
  * @since 10/21/2016
  */
-@PartySubCommandExecutor(subCommand = "invite",
+@PartyAnnotationCommand(name = "invite",
         syntax = "/party invite <Player>",
         description = "Invites a player (and creates a party if not in one).",
         requiresArgumentCompletion = true,
         leaderExclusive = true,
         mustBeInParty = false)
-public class InviteSubCommand extends AnnotatedPartySubCommand {
-
-    public InviteSubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+public class InviteSubCommand extends PartySubCommand {
 
     @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
-        String targetName = getHandler().getArguments()[0];
-        ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(targetName);
-        if (target == null || (target != null && target.getUniqueId() == player.getUniqueId())) {
+    public void execute(ProxiedPlayer player, String[] args) {
+        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+
+        if (target == null || target.getUniqueId() == player.getUniqueId()) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("Cannot find or invite that player to your party! :(").color(ChatColor.RED).create()[0]);
+
             return;
         }
+
         Party targetParty = PartyManager.getInstance().getPartyOf(target);
+
         if (targetParty != null) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("This player is already a member of a party. Ask them to leave their party and try this command again.").color(ChatColor.RED).create()[0]);
+
             return;
         }
-        Party party = !PartyManager.getInstance().hasParty(player) ? new PartyCreator().setLeader(player).create() : PartyManager.getInstance().getPartyOf(player);
+
+        Party party = PartyManager.getInstance().getPartyOf(player);
+
+        if (party == null) {
+            party = new Party(player);
+        }
+
         if (party.getInvited().contains(target)) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("This player is already invited to your party!").color(ChatColor.RED).create()[0]);
+
             return;
         }
-        if (PartySetting.PARTY_INVITE_RECIEVE_TOGGLE_OFF.getPlayers().contains(target)) {
+
+        if (PartySetting.PARTY_INVITE_RECEIVE_TOGGLE_OFF.getPlayers().contains(target)) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("This player is currently not accepting party invitations.").color(ChatColor.RED).create()[0]);
+
             return;
         }
+
         party.invitePlayer(target);
-        player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("Invited player %s!", targetName)).color(ChatColor.AQUA).create()[0]);
-    }
 
-    @Override
-    public void runConsole() {
-
+        player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("Invited player %s!", target.getName())).color(ChatColor.AQUA).create()[0]);
     }
 }

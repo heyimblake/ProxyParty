@@ -1,15 +1,15 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
 import me.heyimblake.proxyparty.ProxyParty;
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.events.PartyDenyInviteEvent;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.CommandConditions;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -32,42 +32,37 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author heyimblake
  * @since 10/23/2016
  */
-@PartySubCommandExecutor(subCommand = "deny",
+@PartyAnnotationCommand(name = "deny",
         syntax = "/party deny <Player>",
         description = "Denies a party invitation from a player.",
         requiresArgumentCompletion = true,
-        leaderExclusive = false,
         mustBeInParty = false)
-public class DenySubCommand extends AnnotatedPartySubCommand {
-
-    public DenySubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+public class DenySubCommand extends PartySubCommand {
 
     @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
-        ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
+    public void execute(ProxiedPlayer player, String[] args) {
+        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
 
-        if (!CommandConditions.blockIfHasParty(player))
-            return;
+        if (!CommandConditions.blockIfHasParty(player)) return;
 
-        if (PartyManager.getInstance().getPartyOf(target) == null || !PartyManager.getInstance().getPartyOf(target).getLeader().getUniqueId().equals(target.getUniqueId())) {
+        Party party = PartyManager.getInstance().getPartyOf(target);
+        
+        if (party == null || !party.getLeader().getUniqueId().equals(target.getUniqueId())) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("The specified player either is not in a party or is not the party leader.").color(ChatColor.RED).create()[0]);
+            
             return;
         }
-        Party party = PartyManager.getInstance().getPartyOf(target);
+        
         if (!party.getInvited().contains(player)) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("You are not invited to this party.").color(ChatColor.RED).create()[0]);
+            
             return;
         }
+        
         party.getInvited().remove(player);
+        
         ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyDenyInviteEvent(party, player));
+        
         player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("You declined %s's party invitation.", target.getName())).color(ChatColor.AQUA).create()[0]);
-    }
-
-    @Override
-    public void runConsole() {
-
     }
 }

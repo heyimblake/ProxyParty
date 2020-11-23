@@ -10,7 +10,6 @@ import me.heyimblake.proxyparty.utils.ConfigManager;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -34,9 +33,13 @@ import java.util.logging.Level;
  * @since 10/21/2016
  */
 public final class ProxyParty extends Plugin {
+
     private static ProxyParty instance;
+
     private boolean loggingEnabled = true;
-    private String logFileName = "log.json";
+
+    private final String logFileName = "log.json";
+
     private File logFile;
     private ConfigManager configManager;
 
@@ -78,18 +81,22 @@ public final class ProxyParty extends Plugin {
     }
 
     private void setupLogFile() {
-        if (!getDataFolder().exists())
-            getDataFolder().mkdir();
+        if (!getDataFolder().exists()) getDataFolder().mkdir();
+
         logFile = new File(getDataFolder().getPath(), logFileName);
+
         if (!logFile.exists()) {
             try {
-                logFile.createNewFile();
+                if (!logFile.createNewFile()) return;
+
                 try (InputStream is = getResourceAsStream(logFileName);
                      OutputStream os = new FileOutputStream(logFile)) {
                     ByteStreams.copy(is, os);
+
                     os.close();
                     is.close();
-                    getLogger().log(Level.INFO, logFileName + " was created with no issues!");
+
+                    this.getLogger().log(Level.INFO, logFileName + " was created with no issues!");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -98,16 +105,18 @@ public final class ProxyParty extends Plugin {
             }
             return;
         }
-        if (!loggingEnabled)
-            return;
-        getLogger().log(Level.INFO, "Detected " + logFileName + ".");
+
+        if (!loggingEnabled) return;
+
+        this.getLogger().log(Level.INFO, "Detected " + logFileName + ".");
+
         try {
             Gson gson = new Gson();
-            List<ActionLogEntry> entires;
-            Type type = new TypeToken<List<ActionLogEntry>>() {
-            }.getType();
-            entires = gson.fromJson(new FileReader(logFile), type);
-            entires.forEach(actionLogEntry -> ActionLogEntry.savedEntries.add(actionLogEntry));
+
+            List<ActionLogEntry> entires = gson.fromJson(new FileReader(logFile), new TypeToken<List<ActionLogEntry>>() {}.getType());
+
+            ActionLogEntry.savedEntries.addAll(entires);
+
             getLogger().log(Level.INFO, "Imported old actions from " + logFileName + ".");
         } catch (FileNotFoundException e) {
             //Not really possible as it's created/verified above, but oh well, here's a catch block!

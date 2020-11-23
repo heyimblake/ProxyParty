@@ -1,8 +1,7 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.Constants;
@@ -32,41 +31,37 @@ import java.util.List;
  * @author heyimblake
  * @since 10/21/2016
  */
-@PartySubCommandExecutor(subCommand = "invited",
+@PartyAnnotationCommand(name = "invited",
         syntax = "/party invited",
         description = "Shows a list of players invited to your party.",
-        requiresArgumentCompletion = false,
-        leaderExclusive = false,
-        mustBeInParty = true)
-public class InvitedSubCommand extends AnnotatedPartySubCommand {
-
-    public InvitedSubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+        requiresArgumentCompletion = false)
+public class InvitedSubCommand extends PartySubCommand {
 
     @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
+    public void execute(ProxiedPlayer player, String[] args) {
         Party party = PartyManager.getInstance().getPartyOf(player);
+
         if (party.getInvited().size() != 0) {
             List<BaseComponent> names = new ArrayList<>();
+
             for (ProxiedPlayer invited : party.getInvited()) {
                 TextComponent textComponent = new TextComponent(invited.getName());
+
                 textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party retract " + invited.getName()));
                 textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(ChatColor.YELLOW + "Click to retract invite of " + ChatColor.AQUA + invited.getName() + ".")}));
                 textComponent.setColor(ChatColor.DARK_AQUA);
+
                 names.add(textComponent);
             }
+
             player.sendMessage(Constants.TAG, new ComponentBuilder("These players have invitations to your party:").color(ChatColor.AQUA).create()[0]);
+
             names.forEach(name -> player.sendMessage(Constants.TAG, name));
+
             player.sendMessage(Constants.TAG, new ComponentBuilder("Click on a name above to retract their invitation.").color(ChatColor.GRAY).create()[0]);
+
             return;
         }
         player.sendMessage(Constants.TAG, new ComponentBuilder("You do not have any outgoing invitations.").color(ChatColor.RED).create()[0]);
-    }
-
-    @Override
-    public void runConsole() {
-
     }
 }
