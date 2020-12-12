@@ -1,8 +1,7 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.partyutils.PartyRole;
@@ -30,32 +29,24 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author heyimblake
  * @since 10/21/2016
  */
-@PartySubCommandExecutor(subCommand = "leave",
+@PartyAnnotationCommand(name = "leave",
         syntax = "/party leave",
         description = "Leave your current party.",
-        requiresArgumentCompletion = false,
-        leaderExclusive = false,
-        mustBeInParty = true)
-public class LeaveSubCommand extends AnnotatedPartySubCommand {
-
-    public LeaveSubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+        requiresArgumentCompletion = false)
+public class LeaveSubCommand extends PartySubCommand {
 
     @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = (ProxiedPlayer) getHandler().getCommandSender();
+    public void execute(ProxiedPlayer player, String[] args) {
         Party party = PartyManager.getInstance().getPartyOf(player);
+
         if (PartyRole.getRoleOf(player) == PartyRole.LEADER) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("You're the leader! Either promote another member to be leader and leave or disband the party.").color(ChatColor.RED).create()[0]);
+
             return;
         }
+
         party.removeParticipant(player);
+
         player.sendMessage(Constants.TAG, new ComponentBuilder("You left the party.").color(ChatColor.YELLOW).create()[0]);
-    }
-
-    @Override
-    public void runConsole() {
-
     }
 }

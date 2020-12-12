@@ -10,9 +10,9 @@ import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Copyright (C) 2017 heyimblake
@@ -35,24 +35,24 @@ import java.util.*;
  */
 public class PartyCommand extends Command {
 
-    private static Map<String, Class<? extends AnnotatedPartySubCommand>> subCommandClasses = new HashMap<>();
+    private final Map<String, PartySubCommand> commands = new HashMap<>();
 
     public PartyCommand() {
         super("party", null);
-        registerSubCommand(InviteSubCommand.class);
-        registerSubCommand(AcceptSubCommand.class);
-        registerSubCommand(DenySubCommand.class);
-        registerSubCommand(FindSubCommand.class);
-        registerSubCommand(ListSubCommand.class);
-        registerSubCommand(InvitedSubCommand.class);
-        registerSubCommand(RetractSubCommand.class);
-        registerSubCommand(KickSubCommand.class);
-        registerSubCommand(ChatSubCommand.class);
-        registerSubCommand(WarpSubCommand.class);
-        registerSubCommand(LeaveSubCommand.class);
-        registerSubCommand(PromoteSubCommand.class);
-        registerSubCommand(DisbandSubCommand.class);
-        registerSubCommand(ToggleSubCommand.class);
+        registerSubCommand(new InviteSubCommand());
+        registerSubCommand(new AcceptSubCommand());
+        registerSubCommand(new ChatSubCommand());
+        registerSubCommand(new DenySubCommand());
+        registerSubCommand(new DisbandSubCommand());
+        registerSubCommand(new FindSubCommand());
+        registerSubCommand(new InvitedSubCommand());
+        registerSubCommand(new KickSubCommand());
+        registerSubCommand(new LeaveSubCommand());
+        registerSubCommand(new ListSubCommand());
+        registerSubCommand(new PromoteSubCommand());
+        registerSubCommand(new RetractSubCommand());
+        registerSubCommand(new ToggleSubCommand());
+        registerSubCommand(new WarpSubCommand());
     }
 
     @Override
@@ -62,51 +62,48 @@ public class PartyCommand extends Command {
             return;
         }
         ProxiedPlayer player = ((ProxiedPlayer) sender);
-        if (args.length > 0) {
-            PartySubCommandHandler handler = new PartySubCommandHandler(sender, Arrays.copyOfRange(args, 1, args.length));
-            String subCMDInput = args[0];
-            for (String key : subCommandClasses.keySet()) {
-                Class<? extends AnnotatedPartySubCommand> clazz = subCommandClasses.get(key);
-                if (key.equalsIgnoreCase(subCMDInput)) {
-                    if (PartyRole.getRoleOf(player) == PartyRole.PARTICIPANT && getSubCommandClassAnnotation(clazz).leaderExclusive()) {
-                        player.sendMessage(Constants.TAG, new ComponentBuilder("You must be the party leader in order to do this.").color(ChatColor.RED).create()[0]);
-                        return;
-                    }
-                    PartySubCommandExecutor partySubCommandExecutor = getSubCommandClassAnnotation(clazz);
-                    if (handler.getArguments().length == 0 && getSubCommandClassAnnotation(clazz).requiresArgumentCompletion()) {
-                        player.sendMessage(Constants.TAG, new TextComponent("Usage: "),
-                                new ComponentBuilder(partySubCommandExecutor.syntax()).color(ChatColor.AQUA)
-                                        .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/party " + partySubCommandExecutor.subCommand() + " "))
-                                        .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(ChatColor.YELLOW + "Click to prepare command.")}))
-                                        .create()[0]);
-                        return;
-                    }
-                    if (PartyManager.getInstance().getPartyOf(player) == null && partySubCommandExecutor.mustBeInParty()) {
-                        player.sendMessage(Constants.TAG, new ComponentBuilder("You must be in a party to do this!").color(ChatColor.RED).create()[0]);
-                        return;
-                    }
-                    performSubCommand(clazz, handler);
-                    return;
-                }
-            }
+        
+        if (args.length <= 0) {
             showHelpMessage(player);
+            
             return;
         }
-        showHelpMessage(player);
-    }
 
-    private void performSubCommand(Class<? extends AnnotatedPartySubCommand> clazz, PartySubCommandHandler handler) {
-        try {
-            Constructor constructor = clazz.getConstructor(handler.getClass());
-            AnnotatedPartySubCommand subCommandInstance = (AnnotatedPartySubCommand) constructor.newInstance(handler);
-            if (handler.isSenderProxiedPlayer()) {
-                subCommandInstance.runProxiedPlayer();
-            } else {
-                subCommandInstance.runConsole();
-            }
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+        String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
+
+        PartySubCommand subCommand = this.getCommand(args[0]);
+
+        if (subCommand == null) {
+            showHelpMessage(player);
+
+            return;
         }
+
+        PartyAnnotationCommand annotations = subCommand.getAnnotations();
+
+        if (annotations == null) return;
+
+        if (PartyRole.getRoleOf(player) == PartyRole.PARTICIPANT && annotations.leaderExclusive()) {
+            player.sendMessage(Constants.TAG, new ComponentBuilder("You must be the party leader in order to do this.").color(ChatColor.RED).create()[0]);
+
+            return;
+        }
+
+        if (newArgs.length == 0 && annotations.requiresArgumentCompletion()) {
+            player.sendMessage(Constants.TAG, new TextComponent("Usage: "),
+                    new ComponentBuilder(annotations.syntax()).color(ChatColor.AQUA)
+                            .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/party " + annotations.name() + " "))
+                            .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(ChatColor.YELLOW + "Click to prepare command.")}))
+                            .create()[0]);
+            return;
+        }
+
+        if (PartyManager.getInstance().getPartyOf(player) == null && annotations.mustBeInParty()) {
+            player.sendMessage(Constants.TAG, new ComponentBuilder("You must be in a party to do this!").color(ChatColor.RED).create()[0]);
+            return;
+        }
+
+        subCommand.execute(player, newArgs);
     }
 
 
@@ -114,58 +111,59 @@ public class PartyCommand extends Command {
         TextComponent topMSG = new TextComponent("Party Commands:");
         topMSG.setColor(ChatColor.LIGHT_PURPLE);
         topMSG.setBold(true);
+
         player.sendMessage(topMSG);
+
         TextComponent prepareMSG = new TextComponent("Click to prepare this command.");
         prepareMSG.setColor(ChatColor.YELLOW);
         prepareMSG.setItalic(true);
+
         TextComponent pt1 = new TextComponent("" + '\u25CF' + " ");
-        for (Class<? extends AnnotatedPartySubCommand> clazz : subCommandClasses.values()) {
-            PartySubCommandExecutor annotatedPartySubCommand = getSubCommandClassAnnotation(clazz);
+
+        for (PartySubCommand command : commands.values()) {
+            PartyAnnotationCommand annotations = command.getAnnotations();
+
+            if (annotations == null) continue;
+
             //Bullet colors tell if the player can run the command or not. Just for a quick glance.
             ChatColor bulletColor = ChatColor.DARK_GREEN;
-            if (annotatedPartySubCommand.mustBeInParty()) {
+
+            if (annotations.mustBeInParty()) {
                 if (!PartyManager.getInstance().hasParty(player)) {
                     bulletColor = ChatColor.DARK_RED;
-                } else {
-                    if (annotatedPartySubCommand.leaderExclusive()) {
-                        if (PartyRole.getRoleOf(player) != PartyRole.LEADER)
-                            bulletColor = ChatColor.DARK_RED;
-                    }
+                } else if (annotations.leaderExclusive()) {
+                    if (PartyRole.getRoleOf(player) != PartyRole.LEADER) bulletColor = ChatColor.DARK_RED;
                 }
             }
+
             pt1.setColor(bulletColor);
 
-            TextComponent pt2 = new TextComponent(annotatedPartySubCommand.syntax());
+            TextComponent pt2 = new TextComponent(annotations.syntax());
             pt2.setColor(ChatColor.AQUA);
             pt2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{prepareMSG}));
-            pt2.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/party " + annotatedPartySubCommand.subCommand() + " "));
+            pt2.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/party " + annotations.name() + " "));
+
             TextComponent pt3 = new TextComponent(" - ");
             pt3.setColor(ChatColor.DARK_GRAY);
-            TextComponent pt4 = new TextComponent(annotatedPartySubCommand.description());
+
+            TextComponent pt4 = new TextComponent(annotations.description());
             pt4.setColor(ChatColor.GRAY);
+
             player.sendMessage(pt1, pt2, pt3, pt4);
         }
+
         player.sendMessage(new TextComponent(" "));
     }
 
-    private void registerSubCommand(Class<? extends AnnotatedPartySubCommand> clazz) {
-        subCommandClasses.put(getSubCommandClassAnnotation(clazz).subCommand(), clazz);
+    private void registerSubCommand(PartySubCommand subCommand) {
+        PartyAnnotationCommand annotation = subCommand.getAnnotations();
+
+        if (annotation == null) return;
+
+        commands.put(annotation.name(), subCommand);
     }
 
-    private Map<String, Class<? extends AnnotatedPartySubCommand>> getSubCommandClasses() {
-        return subCommandClasses;
-    }
-
-    /**
-     * Gets the Annotation of a AnnotatedPartySubCommand class.
-     *
-     * @param clazz the annotatedpartysubcommand class
-     * @return Annotation if it exists, null if invalid
-     */
-    private PartySubCommandExecutor getSubCommandClassAnnotation(Class<? extends AnnotatedPartySubCommand> clazz) {
-        if (clazz.isAnnotationPresent(PartySubCommandExecutor.class)) {
-            return clazz.getAnnotation(PartySubCommandExecutor.class);
-        }
-        return null;
+    private PartySubCommand getCommand(String name) {
+        return commands.get(name.toLowerCase());
     }
 }

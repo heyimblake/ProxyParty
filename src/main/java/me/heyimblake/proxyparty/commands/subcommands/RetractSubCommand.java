@@ -1,16 +1,14 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
-import me.heyimblake.proxyparty.ProxyParty;
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.CommandConditions;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
@@ -32,36 +30,29 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author heyimblake
  * @since 10/26/2016
  */
-@PartySubCommandExecutor(subCommand = "retract",
+@PartyAnnotationCommand(name = "retract",
         syntax = "/party retract <Player>",
         description = "Retracts an invite from a player.",
         requiresArgumentCompletion = true,
-        leaderExclusive = true,
-        mustBeInParty = true)
-public class RetractSubCommand extends AnnotatedPartySubCommand {
-
-    public RetractSubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+        leaderExclusive = true)
+public class RetractSubCommand extends PartySubCommand {
 
     @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
-        ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
-        if (!CommandConditions.checkTargetOnline(target, player))
-            return;
+    public void execute(ProxiedPlayer player, String[] args) {
+        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+
+        if (!CommandConditions.checkTargetOnline(target, player)) return;
 
         Party party = PartyManager.getInstance().getPartyOf(player);
+
         if (!party.getInvited().contains(target)) {
             player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("%s is not invited to your party.", target.getName())).color(ChatColor.RED).create()[0]);
+
             return;
         }
+
         party.retractInvite(target);
+
         player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("You've retracted the invite of %s.", target.getName())).color(ChatColor.AQUA).create()[0]);
-    }
-
-    @Override
-    public void runConsole() {
-
     }
 }

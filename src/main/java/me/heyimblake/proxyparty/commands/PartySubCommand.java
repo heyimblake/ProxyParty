@@ -1,6 +1,9 @@
 package me.heyimblake.proxyparty.commands;
 
 
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+
 /**
  * Copyright (C) 2017 heyimblake
  *
@@ -20,18 +23,20 @@ package me.heyimblake.proxyparty.commands;
  * @author heyimblake
  * @since 10/22/2016
  */
-public abstract class AnnotatedPartySubCommand {
-    private PartySubCommandHandler handler;
+public abstract class PartySubCommand {
 
-    public AnnotatedPartySubCommand(PartySubCommandHandler handler) {
-        this.handler = handler;
-    }
+    public abstract void execute(ProxiedPlayer player, String[] args);
 
-    public abstract void runProxiedPlayer();
+    /**
+     * Gets the Annotation of a AnnotatedPartySubCommand class.
+     *
+     * @return Annotation if it exists, null if invalid
+     */
+    public PartyAnnotationCommand getAnnotations() {
+        if (this.getClass().isAnnotationPresent(PartyAnnotationCommand.class)) {
+            return this.getClass().getAnnotation(PartyAnnotationCommand.class);
+        }
 
-    public abstract void runConsole();
-
-    public PartySubCommandHandler getHandler() {
-        return this.handler;
+        return null;
     }
 }

@@ -34,17 +34,24 @@ public class PlayerServerSwitchListener implements Listener {
     @EventHandler
     public void onPlayerServerSwitch(ServerSwitchEvent event) {
         ProxiedPlayer player = event.getPlayer();
-        if (!PartyManager.getInstance().hasParty(player))
-            return;
+
         Party party = PartyManager.getInstance().getPartyOf(player);
+
+        if (party == null) return;
+
         ProxiedPlayer leader = party.getLeader();
+
         if (PartyRole.getRoleOf(player) == PartyRole.LEADER) {
             party.warpParticipants(player.getServer().getInfo());
+
             party.getLeader().sendMessage(Constants.TAG, new ComponentBuilder("Attempting to send all party members to your server.").color(ChatColor.DARK_AQUA).create()[0]);
+
             return;
         }
+
         if (!player.getServer().getInfo().getName().equalsIgnoreCase(leader.getServer().getInfo().getName())) {
             player.connect(leader.getServer().getInfo());
+
             player.sendMessage(Constants.TAG, new ComponentBuilder("Only party leaders can join servers whilst in a party!").color(ChatColor.RED).bold(true).create()[0]);
         }
     }

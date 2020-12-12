@@ -33,17 +33,17 @@ public class PlayerChatListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(ChatEvent event) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
+        
         Party party = PartyManager.getInstance().getPartyOf(player);
-        if (party == null) {
-            return;
-        }
-        if (!PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player)) {
-            return;
-        }
-        if (event.getMessage().substring(0, 1).equalsIgnoreCase("/"))
-            return;
+
+        if (party == null) return;
+        if (!PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player)) return;
+        if (event.getMessage().substring(0, 1).equalsIgnoreCase("/")) return;
+
         event.setCancelled(true);
+
         party.sendMessage(player, event.getMessage());
+
         new ActionLogEntry("chat", player.getUniqueId(), new String[]{event.getMessage()}).log();
     }
 }

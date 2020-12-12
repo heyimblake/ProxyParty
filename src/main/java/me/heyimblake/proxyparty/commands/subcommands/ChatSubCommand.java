@@ -1,8 +1,7 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.partyutils.PartySetting;
 import me.heyimblake.proxyparty.utils.ActionLogEntry;
@@ -32,39 +31,35 @@ import java.util.Arrays;
  * @author heyimblake
  * @since 10/21/2016
  */
-@PartySubCommandExecutor(subCommand = "chat",
+@PartyAnnotationCommand(name = "chat",
         syntax = "/party chat (Message)",
         description = "Sends a message to all party members, or toggles automatic party chat.",
-        requiresArgumentCompletion = false,
-        leaderExclusive = false,
-        mustBeInParty = true)
-public class ChatSubCommand extends AnnotatedPartySubCommand {
-
-    public ChatSubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+        requiresArgumentCompletion = false
+)
+public class ChatSubCommand extends PartySubCommand {
 
     @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
-        if (getHandler().getArguments().length == 0) {
-            player.sendMessage(Constants.TAG, new ComponentBuilder(!PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player) ? "All messages will now be sent to party chat." : "All messages will no longer be sent to party chat.")
+    public void execute(ProxiedPlayer player, String[] args) {
+        if (args.length == 0) {
+            player.sendMessage(Constants.TAG,
+                    new ComponentBuilder(!PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player) ? "All messages will now be sent to party chat." : "All messages will no longer be sent to party chat.")
                     .color(!PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player) ? ChatColor.GREEN : ChatColor.RED).create()[0]);
 
-            if (PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player))
+            if (PartySetting.PARTY_CHAT_TOGGLE_ON.isEnabledFor(player)) {
                 PartySetting.PARTY_CHAT_TOGGLE_ON.disable(player);
-            else
+            } else {
                 PartySetting.PARTY_CHAT_TOGGLE_ON.enable(player);
+            }
+
             return;
         }
+
         final String[] message = {""};
-        Arrays.stream(getHandler().getArguments()).forEach(string -> message[0] += string + " ");
+
+        Arrays.stream(args).forEach(string -> message[0] += string + " ");
+
         PartyManager.getInstance().getPartyOf(player).sendMessage(player, message[0]);
+
         new ActionLogEntry("chat", player.getUniqueId(), new String[]{message[0]}).log();
-    }
-
-    @Override
-    public void runConsole() {
-
     }
 }

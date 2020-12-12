@@ -26,10 +26,11 @@ import java.util.Set;
  */
 public enum PartySetting {
     PARTY_CHAT_TOGGLE_ON("Chat", "Automatic Party Chat", new HashSet<>()),
-    PARTY_INVITE_RECIEVE_TOGGLE_OFF("Invites", "Block Party Invites", new HashSet<>());
+    PARTY_INVITE_RECEIVE_TOGGLE_OFF("Invites", "Block Party Invites", new HashSet<>());
 
-    private Set<ProxiedPlayer> players;
-    private String argumentString, niceName;
+    private final Set<ProxiedPlayer> players;
+    private final String argumentString;
+    private final String niceName;
 
     PartySetting(String argumentString, String niceName, Set<ProxiedPlayer> players) {
         this.argumentString = argumentString;
@@ -45,9 +46,11 @@ public enum PartySetting {
      */
     public static PartySetting getPartySetting(String argumentString) {
         for (PartySetting setting : PartySetting.values()) {
-            if (setting.getArgumentString().equalsIgnoreCase(argumentString))
-                return setting;
+            if (!setting.getArgumentString().equalsIgnoreCase(argumentString)) continue;
+
+            return setting;
         }
+
         return null;
     }
 
@@ -84,10 +87,11 @@ public enum PartySetting {
      * @param player the player to toggle the partysetting for
      */
     public void toggle(ProxiedPlayer player) {
-        if (this.isEnabledFor(player))
+        if (this.isEnabledFor(player)) {
             this.disable(player);
-        else
+        } else {
             this.enable(player);
+        }
     }
 
     /**

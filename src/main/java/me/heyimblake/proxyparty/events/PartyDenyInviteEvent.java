@@ -24,8 +24,8 @@ import net.md_5.bungee.api.plugin.Event;
  * @since 10/26/2016
  */
 public class PartyDenyInviteEvent extends Event {
-    private Party party;
-    private ProxiedPlayer denier;
+    private final Party party;
+    private final ProxiedPlayer denier;
 
     public PartyDenyInviteEvent(Party party, ProxiedPlayer denier) {
         this.party = party;

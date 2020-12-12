@@ -24,13 +24,13 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PartySubCommandExecutor {
+public @interface PartyAnnotationCommand {
     /**
      * The name of the subcommand.
      *
      * @return subcommand name
      */
-    String subCommand();
+    String name();
 
     /**
      * The usage of the subcommand.

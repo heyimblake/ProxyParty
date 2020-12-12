@@ -1,15 +1,15 @@
 package me.heyimblake.proxyparty.commands.subcommands;
 
 import me.heyimblake.proxyparty.ProxyParty;
-import me.heyimblake.proxyparty.commands.AnnotatedPartySubCommand;
-import me.heyimblake.proxyparty.commands.PartySubCommandExecutor;
-import me.heyimblake.proxyparty.commands.PartySubCommandHandler;
+import me.heyimblake.proxyparty.commands.PartyAnnotationCommand;
+import me.heyimblake.proxyparty.commands.PartySubCommand;
 import me.heyimblake.proxyparty.events.PartyKickEvent;
 import me.heyimblake.proxyparty.partyutils.Party;
 import me.heyimblake.proxyparty.partyutils.PartyManager;
 import me.heyimblake.proxyparty.utils.CommandConditions;
 import me.heyimblake.proxyparty.utils.Constants;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -32,42 +32,39 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * @author heyimblake
  * @since 10/21/2016
  */
-@PartySubCommandExecutor(subCommand = "kick",
+@PartyAnnotationCommand(name = "kick",
         syntax = "/party kick <Player>",
         description = "Remove a player from the party.",
         requiresArgumentCompletion = true,
-        leaderExclusive = true,
-        mustBeInParty = true)
-public class KickSubCommand extends AnnotatedPartySubCommand {
-
-    public KickSubCommand(PartySubCommandHandler handler) {
-        super(handler);
-    }
+        leaderExclusive = true)
+public class KickSubCommand extends PartySubCommand {
 
     @Override
-    public void runProxiedPlayer() {
-        ProxiedPlayer player = ((ProxiedPlayer) getHandler().getCommandSender());
-        ProxiedPlayer target = ProxyParty.getInstance().getProxy().getPlayer(getHandler().getArguments()[0]);
+    public void execute(ProxiedPlayer player, String[] args) {
+        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+
         Party party = PartyManager.getInstance().getPartyOf(player);
-        if (!CommandConditions.checkTargetOnline(target, player))
-            return;
+
+        if (!CommandConditions.checkTargetOnline(target, player)) return;
 
         Party targetParty = PartyManager.getInstance().getPartyOf(target);
+
         if (targetParty == null || targetParty != party) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("That player isn't in your party!").color(ChatColor.RED).create()[0]);
+
             return;
         }
+
         if (party.getLeader().getUniqueId() == target.getUniqueId() || target.getUniqueId() == player.getUniqueId()) {
             player.sendMessage(Constants.TAG, new ComponentBuilder("You can't kick yourself or the Party Leader!").color(ChatColor.RED).create()[0]);
+
             return;
         }
+
         party.removeParticipant(target);
+
         ProxyParty.getInstance().getProxy().getPluginManager().callEvent(new PartyKickEvent(party, target));
+
         player.sendMessage(Constants.TAG, new ComponentBuilder(String.format("You kicked %s out of the party!", target.getName())).color(ChatColor.YELLOW).create()[0]);
-    }
-
-    @Override
-    public void runConsole() {
-
     }
 }
